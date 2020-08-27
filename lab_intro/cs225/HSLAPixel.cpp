@@ -12,4 +12,23 @@
 using namespace std;
 
 namespace cs225 {
+    HSLAPixel::HSLAPixel() {
+        h_ = 0.0
+        s_ = 0.0
+        l_ = 1.0
+        a_ = 1.0
+    }
+    HSLAPixel::HSLAPixel(double hue, double saturation, double luminance) {
+        h_ = hue;
+        s_ = saturation;
+        l_ = luminance;
+        a_ = 1.0
+    }
+    HSLAPixel::HSLAPixel(double hue, double saturation, double luminance, double alpha){
+        h_ = hue;
+        s_ = saturation;
+        l_ = luminance;
+        a_ = alpha;
+    }
+        
 }

@@ -216,4 +216,10 @@ namespace cs225 {
     return os;
   }
 
+
+  //modification functions
+  void PNG::illinify(PNG & png) {
+    
+  }
+
 }
