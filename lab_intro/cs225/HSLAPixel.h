@@ -12,7 +12,7 @@
 
 namespace cs225 {
     class HSLAPixel {
-    double h_, s_, l_, a_;
+    double h, s, l, a;
     public:
         HSLAPixel();
         HSLAPixel(double hue, double saturation, double luminance);
