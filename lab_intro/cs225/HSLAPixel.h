@@ -18,5 +18,5 @@ namespace cs225 {
         HSLAPixel(double hue, double saturation, double luminance);
         HSLAPixel(double hue, double saturation, double luminance, double alpha);
 
-    }
+    };
 }

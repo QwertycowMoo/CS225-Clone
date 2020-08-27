@@ -84,7 +84,7 @@ namespace cs225 {
       * @param y Y-coordinate for the pixel pointer to be grabbed from.
       * @return A reference to the pixel at the given coordinates.
       */
-    //cs225::HSLAPixel & getPixel(unsigned int x, unsigned int y) const;
+    cs225::HSLAPixel & getPixel(unsigned int x, unsigned int y) const;
 
     /**
       * Gets the width of this image.
@@ -110,7 +110,7 @@ namespace cs225 {
   private:
     unsigned int width_;            /*< Width of the image */
     unsigned int height_;           /*< Height of the image */
-    //cs225::HSLAPixel *imageData_;          /*< Array of pixels */
+    cs225::HSLAPixel *imageData_;          /*< Array of pixels */
 
     /**
      * Copeies the contents of `other` to self
