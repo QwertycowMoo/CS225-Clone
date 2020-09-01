@@ -15,8 +15,8 @@ int main(int argc, char *argv[]) {
     cs225::PNG png = myArt(width, width);
     png.writeToFile("art.png");
   } else {
-    std::cout << "Rotating `in.png` as `out.png`" << std::endl;
-    rotate("in.png", "out.png");
+    std::cout << "Rotating `in_01.png` as `out_01.png`" << std::endl;
+    rotate("in_01.png", "out_01.png");
   }
   
   return 0;
