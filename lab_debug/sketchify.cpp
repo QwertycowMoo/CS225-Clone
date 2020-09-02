@@ -29,15 +29,16 @@ PNG* setupOutput(unsigned w, unsigned h) {
  * @return a pointer to the color to use when sketchifying
  */
 HSLAPixel* myFavoriteColor() {
-    HSLAPixel p(-1, 0.8, 0.5);
+    HSLAPixel p(215, 0.8, 0.5);
     return &p;
 }
 
 void sketchify(std::string inputFile, std::string outputFile) {
     // Load in.png
-    PNG* original = NULL;
+    PNG input;
+    input.readFromFile(inputFile);
+    PNG* original = &input;
 
-    original->readFromFile(inputFile);
     unsigned width = original->width();
     unsigned height = original->height();
 
