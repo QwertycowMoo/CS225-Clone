@@ -6,6 +6,6 @@
  * to `out.png`.
  */
 int main() {
-    sketchify("in_01.png", "out.png");
+    sketchify("in_02.png", "out.png");
     return 0;
 }
