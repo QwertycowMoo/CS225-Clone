@@ -44,14 +44,19 @@ void Allocator::loadRooms(const std::string& file)
 {
     // Read in rooms
     fileio::loadRooms(file);
-    rooms = new Room[roomCount];
+    roomCount  = fileio::getNumRooms();
+    rooms = new Room[roomCount]; //fixed
 
     totalCapacity = 0;
     int i = 0;
     while (fileio::areMoreRooms()) {
-        i++; 
-        rooms[i] = fileio::nextRoom();
+
+        rooms[i] = fileio::nextRoom(); //I think nextRoom is being destroyed, the letters array is deleted, then allocate makes a call to get the letters array and change it but it can't cuz it doesn' exist
+        //So nextroom is being deleted, and the letters pointer is pointing to something on the heap, but then gets destroyed. The copy also copies the pointer but now it's pointing to nothing useful
+        //Make a deep copy instead of a shallow one
+        std::cout << rooms[i].capacity << std::endl;
         totalCapacity += rooms[i].capacity;
+        i++; //fixed i being incremented before using it
     }
 }
 
