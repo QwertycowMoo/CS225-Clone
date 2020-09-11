@@ -142,8 +142,7 @@ namespace cs225 {
         *this = scaledImg;
 
     }
-    void Image::scale(unsigned w, unsigned h){
-        writeToFile("oldPNGScale.png");
+     void Image::scale(unsigned w, unsigned h){
         double xScale = (double) w / width();
         double yScale = (double) h / height();
         Image scaledImg(w, h);
@@ -154,6 +153,5 @@ namespace cs225 {
             }   
         }
         *this = scaledImg;
-        writeToFile("newPNGScale.png");
     }
 }
