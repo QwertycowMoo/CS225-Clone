@@ -15,8 +15,15 @@ namespace cs225{
         int addSticker(Image &sticker, unsigned x, unsigned y);
         bool translate(unsigned index, unsigned x, unsigned y);
         void removeSticker(unsigned index);
-        Image* getSticker(unsigned index);
+        int getNumStickers() const;
+        Image* getSticker(unsigned index) const;
         Image render() const;
+        private:
+        int numStickers_;
+        Image* imgArr_;
+        int* xyPos_;
+        void _copy(StickerSheet const & other);
+        void _clear();
     };
 }
 
