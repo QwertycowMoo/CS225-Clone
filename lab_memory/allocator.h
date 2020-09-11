@@ -25,7 +25,10 @@ class Allocator
      */
     Allocator(const std::string& studentFile, const std::string& roomFile);
 
-
+    /**
+     * Destructor for Allocator
+     */
+    ~Allocator();
     /**
      * Calls the solving routine to allocate student letter
      *  groups to rooms.
