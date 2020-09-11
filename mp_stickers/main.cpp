@@ -25,9 +25,7 @@ int main() {
   //   Before exiting main, save your creation to disk as myImage.png
   //
   Image img = createRainbowImage();
-  img.writeToFile("oldPNGScale.png");
   img.scale(10000, 200);
   cout << img.width() << " " << img.height() << endl;
-  img.writeToFile("newPNGScale.png");
   return 0;
 }
