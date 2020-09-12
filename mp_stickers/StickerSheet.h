@@ -21,7 +21,7 @@ namespace cs225{
         private:
         int numStickers_;
         Image* imgArr_;
-        int* xyPos_;
+        unsigned* xyPos_;
         void _copy(StickerSheet const & other);
         void _clear();
     };
