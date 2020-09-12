@@ -26,7 +26,7 @@ int main() {
   //
   Image img = createRainbowImage();
   img.writeToFile("oldPNGScale.png");
-  img.scale(180, 80);
+  img.scale(240, 50);
   img.writeToFile("newPNGScale.png");
   cout << img.width() << " " << img.height() << endl;
   cout << img.getPixel(100, 20).h << endl;

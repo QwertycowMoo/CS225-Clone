@@ -1,5 +1,6 @@
 #include "StickerSheet.h"
-
+#include "cs225/HSLAPixel.h"
+#include "Image.h"
 namespace cs225{
     StickerSheet::StickerSheet(Image image, int numImage){
         numStickers_ = numImage - 1;
@@ -36,7 +37,7 @@ namespace cs225{
     }
     int StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
         for (int i = 0; i < numStickers_; i++) {
-            if (imgArr_[i] == NULL) {
+            if (&imgArr_[i] == NULL) {
                 imgArr_[i] = sticker;
                 xyPos_[i * 1] = x;
                 xyPos_[i * 2] = y;
@@ -53,11 +54,11 @@ namespace cs225{
         unsigned maxX = 0;
         unsigned maxY = 0;
         for (int i = 0; i < numStickers_; i++) {
-            unsigned xPos = imgArr_[i] + xyPos_[i * 1];
+            unsigned xPos = imgArr_[i].width() + xyPos_[i * 1];
             if (xPos > maxX) {
                 maxX = xPos;
             }
-            unsigned yPos = imgArr_[i] + xyPos_[i * 2];
+            unsigned yPos = imgArr_[i].height() + xyPos_[i * 2];
             if (yPos > maxY) {
                 maxY = yPos;
             }
@@ -66,11 +67,11 @@ namespace cs225{
         //Now applying each sticker onto the stickersheet
         for (int i = 0; i < numStickers_; i++) {
             Image sticker = imgArr_[i];
-            int xPos = xyPos_[i * 1;
+            int xPos = xyPos_[i * 1];
             int yPos = xyPos_[i * 2];
-            for (int x = 0; x < sticker.width(); x++) {
-                for (int y = 0; y < sticker.height(); y++) {
-                    HSLA & renderPixel =  render.getPixel(x + xPos, y + yPos);
+            for (unsigned x = 0; x < sticker.width(); x++) {
+                for (unsigned y = 0; y < sticker.height(); y++) {
+                    HSLAPixel & renderPixel =  render.getPixel(x + xPos, y + yPos);
                     if (renderPixel.a != 0) {
                         renderPixel = sticker.getPixel(x,y);
                     }

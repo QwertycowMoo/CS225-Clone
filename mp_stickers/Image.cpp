@@ -143,15 +143,13 @@ namespace cs225 {
 
     }
      void Image::scale(unsigned w, unsigned h){
+
         double xScale = (double) w / width();
         double yScale = (double) h / height();
-        Image scaledImg(w, h);
-        for (unsigned x = 0; x < w; x++) {
-            for (unsigned y = 0; y < h; y++) {
-                HSLAPixel & newPixel = scaledImg.getPixel(x,y);
-                newPixel = getPixel(x/xScale, y/yScale); //integer division so it should just throw away the remainder
-            }   
+        if (xScale <= yScale) {
+            scale(xScale);
+        } else {
+            scale(yScale);
         }
-        *this = scaledImg;
     }
 }
