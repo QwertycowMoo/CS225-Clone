@@ -14,13 +14,17 @@ int main() {
   Image alma; alma.readFromFile("tests/alma.png");
   Image i;    i.readFromFile("tests/i.png");
 
-  StickerSheet sheet(alma, 5);
 
+  StickerSheet sheet(alma, 1);
   sheet.addSticker(i, 20, 200);
 
-  Image expected;
-  expected.readFromFile("tests/expected.png");
-  Image render = sheet.render();
+  sheet.changeMaxStickers(2);
+  cout << sheet.getNumStickers() << endl;
+  sheet.addSticker(i, 40, 200);
+  //Image expected;
+  //expected.readFromFile("tests/expected-2.png");
+  Image render;
+  render = sheet.render();
 
   render.writeToFile("myImage.png");
   return 0;

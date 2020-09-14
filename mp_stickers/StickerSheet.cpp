@@ -1,14 +1,14 @@
 #include "StickerSheet.h"
 #include "cs225/HSLAPixel.h"
 #include "Image.h"
+#include <iostream>
 
 
 namespace cs225{
     StickerSheet::StickerSheet(Image image, int numImage){
-        numStickers_ = numImage - 1;
-        imgArr_ = new Image[numImage];
-        xyPos_ = new unsigned[numImage*2];
-        //set all things to nullptr so we can check for whether image exists
+        numStickers_ = numImage + 1; //since the first image is the background image, we need 1 more than then numImages defined
+        imgArr_ = new Image[numImage + 1]; 
+        xyPos_ = new unsigned[(numImage + 1)*2];
         
         if (numStickers_ >= 0) {
             addSticker(image, 0, 0);
@@ -28,22 +28,31 @@ namespace cs225{
         return other;
     }
     void StickerSheet::changeMaxStickers(unsigned max){
-        /*
-        Image* newImgArr = new Image[max];
-        int* newXyPos = new int[max * 2];
-        for (int i = 0; i < max; i++) {
+        unsigned trueMax = max + 1;
+        Image* newImgArr = new Image[trueMax];
+        unsigned* newXyPos = new unsigned[(trueMax) * 2];
+        unsigned min;
+        if (trueMax <= (unsigned) numStickers_) {
+            min = trueMax;
+        } else {
+            min = numStickers_;
+        }
+        for (unsigned i = 0; i < min; i++) {
             newImgArr[i] = imgArr_[i];
-            newXyPos[i] = xyPos_[i];
+            newXyPos[i * 2] = xyPos_[i * 2];
+            newXyPos[i * 2 + 1] = xyPos_[i * 2 + 1];
         }
         _clear();
-        imgArr_ = newImgArr
+        numStickers_ = (int) trueMax;
+        imgArr_ = newImgArr;
         xyPos_ = newXyPos;
-        */
+        
         //gotta check this for memory leakage
     }
     int StickerSheet::addSticker(Image &sticker, unsigned x, unsigned y){
         for (int i = 0; i < numStickers_; i++) {
             if (imgArr_[i].width() == 0 and imgArr_[i].height() == 0) {
+                std::cout << "adding sticker: " << sticker << std::endl;
                 imgArr_[i] = sticker;
                 xyPos_[i * 2] = x;
                 xyPos_[(i * 2) + 1] = y;
