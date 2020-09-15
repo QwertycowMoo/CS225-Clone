@@ -18,6 +18,9 @@ namespace cs225{
         int getNumStickers() const;
         Image* getSticker(unsigned index) const;
         Image render() const;
+        //where index of the background sticker is 0
+        int getxPos(int i) const;
+        int getyPos(int i) const;
         private:
         int numStickers_;
         Image* imgArr_;
