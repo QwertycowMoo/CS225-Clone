@@ -9,7 +9,7 @@
 #include "drawable.h"
 #include "rectangle.h"
 #include "vector2.h"
-
+#include "cs225/PNG.h"
 /**
  * A subclass of Drawable that can draw a truck
  */
@@ -33,5 +33,6 @@ class Truck : public Drawable
     Truck& operator=(const Truck& rhs);
     Vector2 center() const;
     void set_center(const Vector2& center);
+    void draw(cs225::PNG* canvas) const;
 };
 

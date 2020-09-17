@@ -26,8 +26,7 @@ class Rectangle : public Shape
      * @param width the width of the Rectangle in pixels
      * @param height the height of the Rectangle in pixels
      */
-    Rectangle(const Vector2& center, const cs225::HSLAPixel& color, int width,
-              int height);
+    Rectangle(const Vector2& center, const cs225::HSLAPixel& color, int width, int height);
 
     /**
      * Computes and returns the area of the Rectangle in pixels
