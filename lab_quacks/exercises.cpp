@@ -5,6 +5,7 @@
 
 #include "exercises.h"
 
+
 /**
  * Given a non-negative int n, return the sum of its digits recursively (no
  * loops).
@@ -22,8 +23,14 @@
  */
 int RecursionExercises::sumDigits(int n)
 {
-
-    return -1;
+    if (n < 10){
+        return n;
+    }
+    int sum = 0;
+    int mod = n%10;
+    int next = n/10;
+    sum += mod;
+    return sum + sumDigits(next);
 }
 
 /**
@@ -45,6 +52,11 @@ int RecursionExercises::sumDigits(int n)
  */
 int RecursionExercises::triangle(int rows)
 {
-
-    return -1;
+    if (rows == 0) {
+        return 0;
+    }
+    int count = 0;
+    count += rows;
+    return count + triangle(rows - 1);
 }
+

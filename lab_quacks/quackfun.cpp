@@ -29,9 +29,18 @@ namespace QuackFun {
 template <typename T>
 T sum(stack<T>& s)
 {
+     if (s.empty()) {
+        return 0;
+    }
+
+    T popped = s.top();
+    s.pop();
+    T total = popped + sum(s);
+    s.push(popped);
+    return total;
 
     // Your code here
-    return T(); // stub return value (0 for primitive types). Change this!
+    // stub return value (0 for primitive types). Change this!
                 // Note: T() is the default value for objects, and 0 for
                 // primitive types
 }
@@ -55,9 +64,32 @@ T sum(stack<T>& s)
  */
 bool isBalanced(queue<char> input)
 {
-
-    // @TODO: Make less optimistic
-    return true;
+    stack<char> s;
+    while (!input.empty()){
+        char c = input.front();
+        if (c =='[' || c == ']') {
+            if (s.empty()) {
+                if (c == ']') {
+                    return false;
+                } else {
+                    s.push(c);
+                }
+            } else {
+                if (c == ']') {
+                    s.pop();
+                } else {
+                    s.push(c);
+                }
+            }
+            
+        }
+        input.pop();
+    }
+    if (s.empty()){
+            return true;
+        } else {
+            return false;
+    }
 }
 
 /**
@@ -79,8 +111,34 @@ template <typename T>
 void scramble(queue<T>& q)
 {
     stack<T> s;
-    // optional: queue<T> q2;
-
+    queue<T> q2;
+    queue<T> q3;
+    bool isReversed = false;
+    int group = 1;
+    while(!q.empty()){
+        for (int i = 0; i < group; i++) {
+            if (q.empty()) {
+                break;
+            }
+            T item = q.front();
+            q.pop();
+            
+            if (!isReversed) {
+                q2.push(item);
+            } else {
+                s.push(item);
+            }
+        }
+        if (isReversed){
+            while(!s.empty()) {
+                q2.push(s.top());
+                s.pop();     
+            }
+        }
+        isReversed = !isReversed;
+        group++;
+    }
+    q = q2;
     // Your code here
 }
 }

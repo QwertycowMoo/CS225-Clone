@@ -149,30 +149,38 @@ void List<T>::tripleRotate() {
   cout << "leftover: " << leftover << endl;
   ListNode * currCenter = tail_->prev;
   ListNode * nextCenter = currCenter;
-  for (unsigned i = 0; i < leftover; i++) {
+  if (length_ > 3) {
+    for (unsigned i = 0; i < leftover; i++) {
     currCenter = currCenter -> prev;
   }
+  }
+  
     for (unsigned i = 1; i <= numRotations; ++i) {
-
-      if (i < numRotations){
+      ///Need to be redone
+      if (i < numRotations) {
         nextCenter = nextCenter->prev->prev->prev;
-        currCenter->next->prev = currCenter->prev->prev->prev->prev;
-      } else {
-        currCenter->next->prev = NULL;
-        head_ = currCenter->next;
       }
-      if (i > 1) {
-        currCenter->prev->next = currCenter->next->next->prev->prev;
-      } else {
+
+      
+
+      if (i == numRotations){
+        head_ = currCenter;
+        currCenter->prev = NULL;
+        
+      }
+      ListNode * tempPrev = currCenter->prev->prev;
+      ListNode * tempNext = currCenter->next->next;
+      currCenter->prev->prev = currCenter->next;
+      currCenter->next->next = currCenter->prev;
+      if (i == 1) {
         currCenter->prev->next = NULL;
         tail_ = currCenter->prev;
+      } else {
+        currCenter->prev->next = currCenter->next->next->prev->prev;
       }
+     
       
-      currCenter->prev->prev = currCenter;
-      currCenter->next->next = currCenter;
-      ListNode * tempPrev = currCenter->prev;
-      currCenter->prev = currCenter->next;
-      currCenter->next = tempPrev;
+      
      
 
       //some segfault happening with the second try of rotations
