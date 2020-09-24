@@ -1,13 +1,18 @@
 #include "List.h"
 #include <iostream>
+#include <string>
+#include <vector>
 using std::cout;
 using std::endl;
 int main() {
-  List<unsigned> list;
-    list.insertFront(1);
-    list.insertFront(2);
-    list.insertFront(3);
+  List<int> list;
 
-   cout << (bool) (list.begin() != list.end()) << endl;
+  for (int i = 1; i <= 9; i++)
+      list.insertBack(i);
+
+  list.tripleRotate();
+
+    list.print();
+
   return 0;
 }

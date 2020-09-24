@@ -118,16 +118,16 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   /// @todo Graded in MP3.1
   ListNode * curr = start;
 
-  for (int i = 0; i < splitPoint || curr != NULL; i++) {
+  for (int i = 0; i < splitPoint && curr != NULL; i++) {
     curr = curr->next;
   }
 
   if (curr != NULL) {
-      curr->prev->next = NULL;
-      curr->prev = NULL;
+    curr->prev->next = NULL;
+    curr->prev = NULL;  
   }
 
-  return NULL;
+  return curr;
 }
 
 /**
@@ -142,7 +142,46 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   */
 template <typename T>
 void List<T>::tripleRotate() {
+  //needs to be done backwards
   // @todo Graded in MP3.1
+  unsigned numRotations = length_ / 3;
+  unsigned leftover = length_ % 3;
+  cout << "leftover: " << leftover << endl;
+  ListNode * currCenter = tail_->prev;
+  ListNode * nextCenter = currCenter;
+  for (unsigned i = 0; i < leftover; i++) {
+    currCenter = currCenter -> prev;
+  }
+    for (unsigned i = 1; i <= numRotations; ++i) {
+
+      if (i < numRotations){
+        nextCenter = nextCenter->prev->prev->prev;
+        currCenter->next->prev = currCenter->prev->prev->prev->prev;
+      } else {
+        currCenter->next->prev = NULL;
+        head_ = currCenter->next;
+      }
+      if (i > 1) {
+        currCenter->prev->next = currCenter->next->next->prev->prev;
+      } else {
+        currCenter->prev->next = NULL;
+        tail_ = currCenter->prev;
+      }
+      
+      currCenter->prev->prev = currCenter;
+      currCenter->next->next = currCenter;
+      ListNode * tempPrev = currCenter->prev;
+      currCenter->prev = currCenter->next;
+      currCenter->next = tempPrev;
+     
+
+      //some segfault happening with the second try of rotations
+      currCenter = nextCenter;
+      
+    }
+     //the three are now done, but now the two surrounding this cell are not pointing to the right ones
+      
+  
 }
 
 
