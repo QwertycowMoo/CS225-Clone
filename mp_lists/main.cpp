@@ -3,9 +3,11 @@
 using std::cout;
 using std::endl;
 int main() {
-  List<int>* intList = new List<int>() ;
-  int yuh = 3;
-  intList->insertBack(yuh);
-  delete intList;
+  List<unsigned> list;
+    list.insertFront(1);
+    list.insertFront(2);
+    list.insertFront(3);
+
+   cout << (bool) (list.begin() != list.end()) << endl;
   return 0;
 }

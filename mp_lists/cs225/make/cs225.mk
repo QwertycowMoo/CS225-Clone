@@ -66,7 +66,7 @@ $(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR)
 # - Grab every .cpp file in tests/, compile them to .o files
 # - Build the test program w/ catchmain.cpp from cs225
 OBJS_TEST += $(filter-out $(EXE_OBJ), $(OBJS))
-CPP_TEST = $(wildcard tests/*.cpp)
+CPP_TEST = $(wildcard tests/tests_part1.cpp)
 CPP_TEST += cs225/catch/catchmain.cpp
 OBJS_TEST += $(CPP_TEST:.cpp=.o)
 
