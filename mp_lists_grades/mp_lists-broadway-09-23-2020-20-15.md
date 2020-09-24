@@ -1,0 +1,611 @@
+
+
+
+## Score: 25/109 (22.94%)
+
+
+### ✓ - [0/0] - Output from `make`
+
+- **Points**: 0 / 0
+
+
+```
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c cs225/HSLAPixel.cpp -o .objs/cs225/HSLAPixel.o
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c cs225/PNG.cpp -o .objs/cs225/PNG.o
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c cs225/lodepng/lodepng.cpp -o .objs/cs225/lodepng/lodepng.o
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c tests/tests_part2.cpp -o .objs/tests/tests_part2.o
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c tests/tests_part1.cpp -o .objs/tests/tests_part1.o
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c tests/test_part2_extra.cpp -o .objs/tests/test_part2_extra.o
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c tests/tests_part1_extra.cpp -o .objs/tests/tests_part1_extra.o
+clang++  -std=c++1y -stdlib=libc++ -O0 -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -MMD -MP -g -c cs225/catch/catchmain.cpp -o .objs/cs225/catch/catchmain.o
+clang++ .objs/cs225/HSLAPixel.o .objs/cs225/PNG.o .objs/cs225/lodepng/lodepng.o .objs/tests/tests_part2.o .objs/tests/tests_part1.o .objs/tests/test_part2_extra.o .objs/tests/tests_part1_extra.o .objs/cs225/catch/catchmain.o  -std=c++1y -stdlib=libc++ -lc++abi -o test
+
+```
+
+
+### ✗ - [0/5] - List::reverse
+
+- **Points**: 0 / 5
+
+
+```
+Original: out == expected
+Expanded: PNG(w=900, h=600, hash=3fa66744920ffb90)
+==
+PNG(w=900, h=600, hash=3fa66744920ffb90)
+```
+
+
+### ✗ - [0/5] - List::reverseNth #1
+
+- **Points**: 0 / 5
+
+
+```
+Original: out == expected
+Expanded: PNG(w=900, h=600, hash=3fa66744920ffb90)
+==
+PNG(w=900, h=600, hash=3fa66744920ffb90)
+```
+
+
+### ✗ - [0/5] - List::reverseNth #2
+
+- **Points**: 0 / 5
+
+
+```
+Original: out == expected
+Expanded: PNG(w=900, h=600, hash=3fa66744920ffb90)
+==
+PNG(w=900, h=600, hash=3fa66744920ffb90)
+```
+
+
+### ✗ - [0/10] - List::merge
+
+- **Points**: 0 / 10
+
+
+```
+Original: {Unknown expression after the reported line}
+Expanded: {Unknown expression after the reported line}
+```
+
+
+### ✗ - [0/2] - List::sort simple #1
+
+- **Points**: 0 / 2
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+### ✗ - [0/2] - List::sort simple #2
+
+- **Points**: 0 / 2
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+### ✗ - [0/5] - List::sort #1
+
+- **Points**: 0 / 5
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+### ✗ - [0/5] - List::sort #2
+
+- **Points**: 0 / 5
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+### ✓ - [1/1] - List::insertFront size
+
+- **Points**: 1 / 1
+
+```
+==93== Memcheck, a memory error detector
+==93== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==93== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==93== Command: ./test -r xml "List::insertFront\ size"
+==93== 
+==93== 
+==93== HEAP SUMMARY:
+==93==     in use at exit: 0 bytes in 0 blocks
+==93==   total heap usage: 2,347 allocs, 2,347 frees, 268,272 bytes allocated
+==93== 
+==93== All heap blocks were freed -- no leaks are possible
+==93== 
+==93== For counts of detected and suppressed errors, rerun with: -v
+==93== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [2/2] - List::insertBack size
+
+- **Points**: 2 / 2
+
+```
+==95== Memcheck, a memory error detector
+==95== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==95== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==95== Command: ./test -r xml "List::insertBack\ size"
+==95== 
+==95== 
+==95== HEAP SUMMARY:
+==95==     in use at exit: 0 bytes in 0 blocks
+==95==   total heap usage: 2,347 allocs, 2,347 frees, 268,272 bytes allocated
+==95== 
+==95== All heap blocks were freed -- no leaks are possible
+==95== 
+==95== For counts of detected and suppressed errors, rerun with: -v
+==95== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [4/4] - List::insert contents
+
+- **Points**: 4 / 4
+
+```
+==97== Memcheck, a memory error detector
+==97== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==97== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==97== Command: ./test -r xml "List::insert\ contents"
+==97== 
+==97== 
+==97== HEAP SUMMARY:
+==97==     in use at exit: 0 bytes in 0 blocks
+==97==   total heap usage: 2,343 allocs, 2,343 frees, 268,176 bytes allocated
+==97== 
+==97== All heap blocks were freed -- no leaks are possible
+==97== 
+==97== For counts of detected and suppressed errors, rerun with: -v
+==97== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [5/5] - List::triplerotate basic
+
+- **Points**: 5 / 5
+
+```
+==99== Memcheck, a memory error detector
+==99== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==99== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==99== Command: ./test -r xml "List::triplerotate\ basic"
+==99== 
+==99== 
+==99== HEAP SUMMARY:
+==99==     in use at exit: 0 bytes in 0 blocks
+==99==   total heap usage: 2,351 allocs, 2,351 frees, 268,464 bytes allocated
+==99== 
+==99== All heap blocks were freed -- no leaks are possible
+==99== 
+==99== For counts of detected and suppressed errors, rerun with: -v
+==99== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✗ - [0/10] - List::triplerotate simple
+
+- **Points**: 0 / 10
+
+
+```
+Original: "< 2 3 1 5 6 4 >" == s.str()
+Expanded: "< 2 3 1 5 6 4 >" == "< 1 2 3 4 5 6 >"
+```
+
+
+### ✗ - [0/5] - List::split simple
+
+- **Points**: 0 / 5
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+### ✗ - [0/5] - List::split images
+
+- **Points**: 0 / 5
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+### ✓ - [3/3] - List::_destroy empty list
+
+- **Points**: 3 / 3
+
+```
+==104== Memcheck, a memory error detector
+==104== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==104== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==104== Command: ./test -r xml "List::_destroy\ empty\ list"
+==104== 
+==104== 
+==104== HEAP SUMMARY:
+==104==     in use at exit: 0 bytes in 0 blocks
+==104==   total heap usage: 2,355 allocs, 2,355 frees, 269,104 bytes allocated
+==104== 
+==104== All heap blocks were freed -- no leaks are possible
+==104== 
+==104== For counts of detected and suppressed errors, rerun with: -v
+==104== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [1/1] - List::begin() returns an iterator to the front of the list
+
+- **Points**: 1 / 1
+
+```
+==106== Memcheck, a memory error detector
+==106== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==106== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==106== Command: ./test -r xml "List::begin()\ returns\ an\ iterator\ to\ the\ front\ of\ the\ list"
+==106== 
+==106== 
+==106== HEAP SUMMARY:
+==106==     in use at exit: 0 bytes in 0 blocks
+==106==   total heap usage: 2,359 allocs, 2,359 frees, 273,440 bytes allocated
+==106== 
+==106== All heap blocks were freed -- no leaks are possible
+==106== 
+==106== For counts of detected and suppressed errors, rerun with: -v
+==106== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [1/1] - List::ListIterator::operator++ advances the iterator (pre-increment)
+
+- **Points**: 1 / 1
+
+```
+==108== Memcheck, a memory error detector
+==108== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==108== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==108== Command: ./test -r xml "List::ListIterator::operator++\ advances\ the\ iterator\ (pre-increment)"
+==108== 
+==108== 
+==108== HEAP SUMMARY:
+==108==     in use at exit: 0 bytes in 0 blocks
+==108==   total heap usage: 2,359 allocs, 2,359 frees, 275,840 bytes allocated
+==108== 
+==108== All heap blocks were freed -- no leaks are possible
+==108== 
+==108== For counts of detected and suppressed errors, rerun with: -v
+==108== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [1/1] - List::ListIterator::operator++ advances the iterator (post-increment)
+
+- **Points**: 1 / 1
+
+```
+==110== Memcheck, a memory error detector
+==110== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==110== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==110== Command: ./test -r xml "List::ListIterator::operator++\ advances\ the\ iterator\ (post-increment)"
+==110== 
+==110== 
+==110== HEAP SUMMARY:
+==110==     in use at exit: 0 bytes in 0 blocks
+==110==   total heap usage: 2,359 allocs, 2,359 frees, 275,840 bytes allocated
+==110== 
+==110== All heap blocks were freed -- no leaks are possible
+==110== 
+==110== For counts of detected and suppressed errors, rerun with: -v
+==110== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [1/1] - List::ListIterator::operator++ (post-increment) returns an un-incremented iterator
+
+- **Points**: 1 / 1
+
+```
+==112== Memcheck, a memory error detector
+==112== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==112== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==112== Command: ./test -r xml "List::ListIterator::operator++\ (post-increment)\ returns\ an\ un-incremented\ iterator"
+==112== 
+==112== 
+==112== HEAP SUMMARY:
+==112==     in use at exit: 0 bytes in 0 blocks
+==112==   total heap usage: 2,359 allocs, 2,359 frees, 278,240 bytes allocated
+==112== 
+==112== All heap blocks were freed -- no leaks are possible
+==112== 
+==112== For counts of detected and suppressed errors, rerun with: -v
+==112== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [1/1] - List::ListIterator::operator-- moves the iterator backwards
+
+- **Points**: 1 / 1
+
+```
+==114== Memcheck, a memory error detector
+==114== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==114== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==114== Command: ./test -r xml "List::ListIterator::operator--\ moves\ the\ iterator\ backwards"
+==114== 
+==114== 
+==114== HEAP SUMMARY:
+==114==     in use at exit: 0 bytes in 0 blocks
+==114==   total heap usage: 2,359 allocs, 2,359 frees, 273,440 bytes allocated
+==114== 
+==114== All heap blocks were freed -- no leaks are possible
+==114== 
+==114== For counts of detected and suppressed errors, rerun with: -v
+==114== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✓ - [1/1] - List::ListIterator::operator-- (post-increment) returns an un-incremented iterator
+
+- **Points**: 1 / 1
+
+```
+==116== Memcheck, a memory error detector
+==116== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==116== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==116== Command: ./test -r xml "List::ListIterator::operator--\ (post-increment)\ returns\ an\ un-incremented\ iterator"
+==116== 
+==116== 
+==116== HEAP SUMMARY:
+==116==     in use at exit: 0 bytes in 0 blocks
+==116==   total heap usage: 2,359 allocs, 2,359 frees, 278,240 bytes allocated
+==116== 
+==116== All heap blocks were freed -- no leaks are possible
+==116== 
+==116== For counts of detected and suppressed errors, rerun with: -v
+==116== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✗ - [0/1] - List::ListIterator::end is reached
+
+- **Points**: 0 / 1
+
+```
+==118== Memcheck, a memory error detector
+==118== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==118== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==118== Command: ./test -r xml "List::ListIterator::end\ is\ reached"
+==118== 
+==118== Conditional jump or move depends on uninitialised value(s)
+==118==    at 0x4630B0: Catch::RunContext::handleExpr(Catch::AssertionInfo const&, Catch::ITransientExpression const&, Catch::AssertionReaction&) (catch.hpp:9683)
+==118==    by 0x440F8B: Catch::AssertionHandler::handleExpr(Catch::ITransientExpression const&) (catch.hpp:5467)
+==118==    by 0x438668: void Catch::AssertionHandler::handleExpr<bool>(Catch::ExprLhs<bool> const&) (catch.hpp:1648)
+==118==    by 0x4365E9: ____C_A_T_C_H____T_E_S_T____31() (tests_part1.cpp:243)
+==118==    by 0x4728B2: Catch::TestInvokerAsFunction::invoke() const (catch.hpp:10892)
+==118==    by 0x463006: Catch::TestCase::invoke() const (catch.hpp:10793)
+==118==    by 0x462F3C: Catch::RunContext::invokeActiveTestCase() (catch.hpp:9658)
+==118==    by 0x45F496: Catch::RunContext::runCurrentTest(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&) (catch.hpp:9622)
+==118==    by 0x45DA6E: Catch::RunContext::runTest(Catch::TestCase const&) (catch.hpp:9408)
+==118==    by 0x466E06: Catch::(anonymous namespace)::runTests(std::__1::shared_ptr<Catch::Config> const&) (catch.hpp:9948)
+==118==    by 0x465AA2: Catch::Session::runInternal() (catch.hpp:10149)
+==118==    by 0x46576A: Catch::Session::run() (catch.hpp:10106)
+==118== 
+==118== 
+==118== HEAP SUMMARY:
+==118==     in use at exit: 0 bytes in 0 blocks
+==118==   total heap usage: 2,352 allocs, 2,352 frees, 270,872 bytes allocated
+==118== 
+==118== All heap blocks were freed -- no leaks are possible
+==118== 
+==118== For counts of detected and suppressed errors, rerun with: -v
+==118== Use --track-origins=yes to see where uninitialised values come from
+==118== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✗ - [0/1] - List::ListIterator::end is not ::begin in a non-empty list
+
+- **Points**: 0 / 1
+
+```
+==120== Memcheck, a memory error detector
+==120== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==120== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==120== Command: ./test -r xml "List::ListIterator::end\ is\ not\ ::begin\ in\ a\ non-empty\ list"
+==120== 
+==120== Conditional jump or move depends on uninitialised value(s)
+==120==    at 0x4630B0: Catch::RunContext::handleExpr(Catch::AssertionInfo const&, Catch::ITransientExpression const&, Catch::AssertionReaction&) (catch.hpp:9683)
+==120==    by 0x440F8B: Catch::AssertionHandler::handleExpr(Catch::ITransientExpression const&) (catch.hpp:5467)
+==120==    by 0x438668: void Catch::AssertionHandler::handleExpr<bool>(Catch::ExprLhs<bool> const&) (catch.hpp:1648)
+==120==    by 0x4368AE: ____C_A_T_C_H____T_E_S_T____33() (tests_part1.cpp:252)
+==120==    by 0x4728B2: Catch::TestInvokerAsFunction::invoke() const (catch.hpp:10892)
+==120==    by 0x463006: Catch::TestCase::invoke() const (catch.hpp:10793)
+==120==    by 0x462F3C: Catch::RunContext::invokeActiveTestCase() (catch.hpp:9658)
+==120==    by 0x45F496: Catch::RunContext::runCurrentTest(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&) (catch.hpp:9622)
+==120==    by 0x45DA6E: Catch::RunContext::runTest(Catch::TestCase const&) (catch.hpp:9408)
+==120==    by 0x466E06: Catch::(anonymous namespace)::runTests(std::__1::shared_ptr<Catch::Config> const&) (catch.hpp:9948)
+==120==    by 0x465AA2: Catch::Session::runInternal() (catch.hpp:10149)
+==120==    by 0x46576A: Catch::Session::run() (catch.hpp:10106)
+==120== 
+==120== 
+==120== HEAP SUMMARY:
+==120==     in use at exit: 0 bytes in 0 blocks
+==120==   total heap usage: 2,352 allocs, 2,352 frees, 273,272 bytes allocated
+==120== 
+==120== All heap blocks were freed -- no leaks are possible
+==120== 
+==120== For counts of detected and suppressed errors, rerun with: -v
+==120== Use --track-origins=yes to see where uninitialised values come from
+==120== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✗ - [0/4] - List::reverse simple
+
+- **Points**: 0 / 4
+
+
+```
+Original: "< 4 12 -1 99 3 >" == s.str()
+Expanded: "< 4 12 -1 99 3 >" == "< 3 99 -1 12 4 >"
+```
+
+
+### ✗ - [0/2] - List::reverse edge cases
+
+- **Points**: 0 / 2
+
+```
+==123== Memcheck, a memory error detector
+==123== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==123== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==123== Command: ./test -r xml "List::reverse\ edge\ cases"
+==123== 
+==123== Conditional jump or move depends on uninitialised value(s)
+==123==    at 0x42ADF2: List<int>::print(std::__1::basic_ostream<char, std::__1::char_traits<char> >&) const (List-given.hpp:130)
+==123==    by 0x439B83: ____C_A_T_C_H____T_E_S_T____2() (test_part2_extra.cpp:41)
+==123==    by 0x4728B2: Catch::TestInvokerAsFunction::invoke() const (catch.hpp:10892)
+==123==    by 0x463006: Catch::TestCase::invoke() const (catch.hpp:10793)
+==123==    by 0x462F3C: Catch::RunContext::invokeActiveTestCase() (catch.hpp:9658)
+==123==    by 0x45F496: Catch::RunContext::runCurrentTest(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&) (catch.hpp:9622)
+==123==    by 0x45DA6E: Catch::RunContext::runTest(Catch::TestCase const&) (catch.hpp:9408)
+==123==    by 0x466E06: Catch::(anonymous namespace)::runTests(std::__1::shared_ptr<Catch::Config> const&) (catch.hpp:9948)
+==123==    by 0x465AA2: Catch::Session::runInternal() (catch.hpp:10149)
+==123==    by 0x46576A: Catch::Session::run() (catch.hpp:10106)
+==123==    by 0x4656E9: Catch::Session::run(int, char**) (catch.hpp:10074)
+==123==    by 0x492761: main (catch.hpp:13613)
+==123== 
+==123== 
+==123== HEAP SUMMARY:
+==123==     in use at exit: 0 bytes in 0 blocks
+==123==   total heap usage: 2,353 allocs, 2,353 frees, 268,552 bytes allocated
+==123== 
+==123== All heap blocks were freed -- no leaks are possible
+==123== 
+==123== For counts of detected and suppressed errors, rerun with: -v
+==123== Use --track-origins=yes to see where uninitialised values come from
+==123== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✗ - [0/5] - List::reverseNth #3
+
+- **Points**: 0 / 5
+
+
+```
+Original: "< 4 3 2 1 8 7 6 5 10 9 >" == s.str()
+Expanded: "< 4 3 2 1 8 7 6 5 10 9 >"
+==
+"< 1 2 3 4 5 6 7 8 9 10 >"
+```
+
+
+### ✗ - [0/5] - List::merge #2
+
+- **Points**: 0 / 5
+
+
+```
+Original: "< 1 2 10 15 20 30 35 40 45 50 55 65 75 100 200 300 400 500 >" == s1.str()
+Expanded: "< 1 2 10 15 20 30 35 40 45 50 55 65 75 100 200 300 400 500 >"
+==
+"< >"
+```
+
+
+### ✗ - [0/2] - List::sort simple #3
+
+- **Points**: 0 / 2
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+### ✓ - [4/4] - List::insert contents #2
+
+- **Points**: 4 / 4
+
+```
+==128== Memcheck, a memory error detector
+==128== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==128== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==128== Command: ./test -r xml "List::insert\ contents\ #2"
+==128== 
+==128== 
+==128== HEAP SUMMARY:
+==128==     in use at exit: 0 bytes in 0 blocks
+==128==   total heap usage: 2,358 allocs, 2,358 frees, 268,672 bytes allocated
+==128== 
+==128== All heap blocks were freed -- no leaks are possible
+==128== 
+==128== For counts of detected and suppressed errors, rerun with: -v
+==128== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+
+
+
+### ✗ - [0/5] - List::split edge cases
+
+- **Points**: 0 / 5
+
+
+```
+Fatal Error: SIGSEGV - Segmentation violation signal
+```
+
+
+---
+
+This report was generated for **kjzhou2** using **80c3433271dfd371baf4c931d8073896c3725742** (latest commit as of **September 23rd 2020, 8:15 pm**)
