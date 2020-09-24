@@ -2,12 +2,15 @@
  * @file list.cpp
  * Doubly Linked List (MP 3).
  */
-
+#include <iostream>
+using std::cout;
+using std::endl;
 template <class T>
 List<T>::List() { 
   // @TODO: graded in MP3.1
     ListNode* head_ = NULL;
     ListNode* tail_ = NULL;
+    length_ = 0;
 }
 
 /**
@@ -37,6 +40,16 @@ typename List<T>::ListIterator List<T>::end() const {
 template <typename T>
 void List<T>::_destroy() {
   /// @todo Graded in MP3.1
+  ListNode * toDelete = head_;
+  ListNode * nextDelete = head_;
+  for (int i = 0; i < length_; i++) { //need to check whether this is done the correct amount of times
+    if (i < length_ - 1) { //need this so that we don't try to access the next of a null pointer
+      nextDelete = nextDelete->next;  
+    }
+    delete toDelete;
+    toDelete = nextDelete;
+  }
+  
 }
 
 /**
@@ -51,17 +64,15 @@ void List<T>::insertFront(T const & ndata) {
   ListNode * newNode = new ListNode(ndata);
   newNode -> next = head_;
   newNode -> prev = NULL;
-  
-  if (head_ != NULL) {
-    head_ -> prev = newNode;
-  }
-  if (tail_ == NULL) {
-    tail_ = newNode;
-  }
-  
-
+    
+    if (length_ != 0) {
+        head_ -> prev = newNode;
+        head_ = newNode;
+    } else {
+      head_ = newNode;
+      tail_ = newNode;
+    }
   length_++;
-
 }
 
 /**
@@ -73,6 +84,17 @@ void List<T>::insertFront(T const & ndata) {
 template <typename T>
 void List<T>::insertBack(const T & ndata) {
   /// @todo Graded in MP3.1
+  ListNode *newNode = new ListNode(ndata);
+  newNode->next = NULL;
+  newNode->prev = tail_;
+  if (length_ != 0) {
+    tail_->next = newNode;
+    tail_ = newNode;
+  } else {
+    head_ = newNode;
+    tail_ = newNode;
+  }
+  length_++;
 }
 
 /**
