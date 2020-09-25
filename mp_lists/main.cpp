@@ -9,7 +9,7 @@ int main() {
 
    List<int> list;
 
-    for (int i = 1; i <= 3; i++)
+    for (int i = 1; i <= 6; i++)
         list.insertBack(i);
 
     list.tripleRotate();

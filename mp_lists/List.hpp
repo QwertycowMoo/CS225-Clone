@@ -158,28 +158,31 @@ void List<T>::tripleRotate() {
     for (unsigned i = 1; i <= numRotations; ++i) {
       ///Need to be redone
       if (i < numRotations) {
-        nextCenter = nextCenter->prev->prev->prev;
+        nextCenter = nextCenter->prev->prev->prev;  
       }
-
       
-
-      if (i == numRotations){
-        head_ = currCenter;
-        currCenter->prev = NULL;
-        
-      }
-      ListNode * tempPrev = currCenter->prev->prev;
       ListNode * tempNext = currCenter->next->next;
       currCenter->prev->prev = currCenter->next;
-      currCenter->next->next = currCenter->prev;
       if (i == 1) {
         currCenter->prev->next = NULL;
         tail_ = currCenter->prev;
       } else {
-        currCenter->prev->next = currCenter->next->next->prev->prev;
+        currCenter->prev->next = currCenter->next->next->prev->prev; //is this the same as the nextcenter prev next? no because i < numRotations
       }
-     
+      currCenter->next->next = currCenter->prev;
       
+      
+      //needs to be separate from the nextcenter because we're playing with the currCenter
+      if (i < numRotations) {
+        currCenter->prev = nextCenter->prev;
+        nextCenter->prev->next = currCenter;
+      } else {
+        head_ = currCenter;
+        currCenter->prev = NULL;
+      }
+    
+      
+
       
      
 
