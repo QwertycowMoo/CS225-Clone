@@ -3,8 +3,6 @@
  * Doubly Linked List (MP 3).
  */
 #include <iostream>
-using std::cout;
-using std::endl;
 template <class T>
 List<T>::List() { 
   // @TODO: graded in MP3.1
@@ -29,7 +27,7 @@ typename List<T>::ListIterator List<T>::begin() const {
 template <typename T>
 typename List<T>::ListIterator List<T>::end() const {
   // @TODO: graded in MP3.1
-  return List<T>::ListIterator(tail_->next);
+  return List<T>::ListIterator(nullptr);
 }
 
 
@@ -146,7 +144,6 @@ void List<T>::tripleRotate() {
   // @todo Graded in MP3.1
   unsigned numRotations = length_ / 3;
   unsigned leftover = length_ % 3;
-  cout << "leftover: " << leftover << endl;
   ListNode * currCenter = tail_->prev;
   ListNode * nextCenter = currCenter;
   if (length_ > 3) {

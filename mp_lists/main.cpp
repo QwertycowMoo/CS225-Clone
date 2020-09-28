@@ -7,14 +7,15 @@ using std::endl;
 int main() {
 
 
-   List<int> list;
+  List<int> list;
 
-    for (int i = 1; i <= 6; i++)
-        list.insertBack(i);
+  for (int i = 1; i <=6; i++) {
+    list.insertFront(i);
+  }
+    for (auto it = list.begin(); it != list.end(); it++) {
+      list.print();
+    }
 
-    list.tripleRotate();
-
-    list.print();
 
   return 0;
 }
