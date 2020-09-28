@@ -27,7 +27,7 @@ typename List<T>::ListIterator List<T>::begin() const {
 template <typename T>
 typename List<T>::ListIterator List<T>::end() const {
   // @TODO: graded in MP3.1
-  return List<T>::ListIterator(nullptr);
+  return List<T>::ListIterator(tail_ -> next);
 }
 
 
@@ -60,13 +60,16 @@ template <typename T>
 void List<T>::insertFront(T const & ndata) {
   /// @todo Graded in MP3.1
   ListNode * newNode = new ListNode(ndata);
-  newNode -> next = head_;
-  newNode -> prev = NULL;
+  
     
     if (length_ != 0) {
-        head_ -> prev = newNode;
-        head_ = newNode;
+      newNode -> next = head_;
+      newNode -> prev = NULL;
+      head_ -> prev = newNode;
+      head_ = newNode;
     } else {
+      newNode -> next = nullptr;
+      newNode -> prev = nullptr;
       head_ = newNode;
       tail_ = newNode;
     }
@@ -83,12 +86,15 @@ template <typename T>
 void List<T>::insertBack(const T & ndata) {
   /// @todo Graded in MP3.1
   ListNode *newNode = new ListNode(ndata);
-  newNode->next = NULL;
-  newNode->prev = tail_;
+
   if (length_ != 0) {
+    newNode->next = nullptr;
+    newNode->prev = tail_;
     tail_->next = newNode;
     tail_ = newNode;
   } else {
+    newNode->next = nullptr;
+    newNode->prev = nullptr;
     head_ = newNode;
     tail_ = newNode;
   }

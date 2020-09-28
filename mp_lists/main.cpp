@@ -12,7 +12,10 @@ int main() {
   for (int i = 1; i <=6; i++) {
     list.insertFront(i);
   }
-    for (auto it = list.begin(); it != list.end(); it++) {
+
+  cout << (list.begin() == list.end()) << endl;
+  auto it = list.begin();
+    for (it = list.begin(); it != list.end(); it++) {
       list.print();
     }
 
