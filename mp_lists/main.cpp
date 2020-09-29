@@ -8,16 +8,13 @@ int main() {
 
 
   List<int> list;
-
+  
   for (int i = 1; i <=6; i++) {
     list.insertFront(i);
   }
-
-  cout << (list.begin() == list.end()) << endl;
-  auto it = list.begin();
-    for (it = list.begin(); it != list.end(); it++) {
-      list.print();
-    }
+  list.print();
+  list.reverse();
+  list.print();
 
 
   return 0;
