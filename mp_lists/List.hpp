@@ -293,7 +293,77 @@ void List<T>::mergeWith(List<T> & otherList) {
 template <typename T>
 typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) {
   /// @todo Graded in MP3.2
-  return NULL;
+
+  ListNode * secondNext;
+  ListNode * tFirst = first;
+
+  while(first != nullptr && second != nullptr) {
+    std::cout << first->data << second->data << std::endl;
+    if (first->next != nullptr) {
+      //first still has data and needs the next thing to have a backpointer to the second
+      if (first->data < second->data && second->data < first->next->data) {
+        //second should go between first and first->next
+        secondNext = second->next;
+        ListNode * tempFirstNext = first->next;
+        first->next = second;
+        second->prev = first;
+        second->next = tempFirstNext;
+        tempFirstNext -> prev = second;
+        second = secondNext;
+        first = first->next;
+
+      } else if (second->data <= first->data) {
+        //second should go before first 
+        secondNext = second->next;
+        ListNode * tempFirstPrev = first->prev;
+        first->prev = second;
+        second->next = first;
+        second->prev = tempFirstPrev;
+
+        //set head to be correct if its the first thing in the list
+        if (tempFirstPrev == nullptr) {
+          tFirst = second;
+        } else {
+          tempFirstPrev->next = second;
+        }
+        second = secondNext;
+        
+      } else {
+        //nothing happens, move on
+        first = first->next;
+      }
+      
+      
+    } else {
+      //first has run out of things, this one is the last item
+      if (second->data < first->data) {
+        //second still has data that needs to be put behind first
+        secondNext = second->next;
+        ListNode * tempFirstPrev = first->prev;
+        first->prev = second;
+        second->next = first;
+        second->prev = tempFirstPrev;
+         if (tempFirstPrev == nullptr) {
+          tFirst = second;
+        } else {
+          tempFirstPrev->next = second;
+        }
+        second = secondNext;
+      } else {
+        //first is the smallest thing, add the second and then let it go to null pointer so we get the rest of second
+        first -> next = second;
+        second ->prev = first;
+        first = first->next;
+        second = second->next;
+      }
+      
+      
+    }
+    
+    
+  }
+  
+  return tFirst;
 }
 
 /**
