@@ -253,10 +253,12 @@ void List<T>::reverseNth(int n) {
   ListNode *prevNextSwap = toSwap;
   int counter = 0;
   bool doesSwap = true;
-  while(doesSwap) {
+  std::cout << "length" << length_ << std::endl;
+  std::cout << "length%n" << length_%n << std::endl;
+  std::cout << "total reversals: " << length_/n << std::endl;
+  for (int j = 0; j < length_/n; j++) {
     for (int i = 0; i < n - 1; i++) {
-      if (nextSwap == nullptr){
-        doesSwap = false;
+      if (nextSwap->next == nullptr){
         break;
       }
       nextSwap = nextSwap->next;
@@ -272,39 +274,42 @@ void List<T>::reverseNth(int n) {
       farNext = farNext->next;
     }
 
-    if (doesSwap) {
-      reverse(toSwap, nextSwap); 
-
-      if (counter == (length_/n) && length_%n == 0) {
-        //last swap
-        tail_ = nextSwap;
-      } else if (counter == (length_/n) - 1 && length_%n != 0) {
-        //last swap but there's still things left
-        nextSwap->next = toSwap->prev;
-      } else {
-        //last swap and farNext is an actual pointer
-        nextSwap->next = farNext; 
-      }
-
-      if (counter == 0){
-        //first swap, set head
-        head_ = toSwap;
-        ListNode *tempToSwap = toSwap;
-        toSwap = toSwap->prev;
-        tempToSwap->prev = nullptr;
-      } else {
-        //other swaps, set toSwap(last element now) 
-        ListNode *tempToSwap = toSwap;
-        toSwap = toSwap->prev;
-        tempToSwap->prev = prevNextSwap;
-      }
-
-      prevNextSwap = nextSwap;
-      nextSwap = toSwap;
-      farNext = toSwap;
-      
+    //reverse needs to reverse the rest even if its not complete
+    reverse(toSwap, nextSwap); 
+    std::cout << toSwap->data << " to " << nextSwap->data << std::endl;
+    if (j == (length_/n) - 1 && length_%n == 0) {
+      std::cout << "last" << std::endl;
+      //last swap
+      tail_ = nextSwap;
+      nextSwap->next = toSwap->prev;
+    } else if (j == (length_/n) - 1 && length_%n != 0) {
+      std::cout << "things left" << std::endl;
+      //last swap but there's still things left
+      std::cout << "still need to swap" << toSwap->prev->data << " and " << tail_->data << std::endl;
+      reverse(toSwap->prev, tail_);
+      nextSwap->next = toSwap->prev;
+      tail_->next = nullptr;
+    } else {
+      //last swap and farNext is an actual pointer
+      nextSwap->next = farNext; 
     }
-    counter++;
+
+    if (j == 0){
+      //first swap, set head
+      head_ = toSwap;
+      ListNode *tempToSwap = toSwap;
+      toSwap = toSwap->prev;
+      tempToSwap->prev = nullptr;
+    } else {
+      //other swaps, set toSwap(last element now) 
+      ListNode *tempToSwap = toSwap;
+      toSwap = toSwap->prev;
+      tempToSwap->prev = prevNextSwap;
+    }
+
+    prevNextSwap = nextSwap;
+    nextSwap = toSwap;
+    farNext = toSwap;
   }
 }
 
