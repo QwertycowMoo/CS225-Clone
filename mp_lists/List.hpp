@@ -298,14 +298,14 @@ void List<T>::reverseNth(int n) {
         toSwap = toSwap->prev;
         tempToSwap->prev = prevNextSwap;
       }
-      
+
       prevNextSwap = nextSwap;
       nextSwap = toSwap;
       farNext = toSwap;
       
     }
     counter++;
-  
+  }
 }
 
 
