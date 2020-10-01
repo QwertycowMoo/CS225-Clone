@@ -221,19 +221,20 @@ void List<T>::reverse() {
 template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
-
   ListNode *tempStart = startPoint;
-  while (startPoint != nullptr) {
+  while (startPoint != endPoint) {
     ListNode *tempNext = startPoint->next;
     startPoint->next = startPoint->prev;
     startPoint->prev = tempNext;
-    if (startPoint->prev == nullptr) {
-      break;
-    }
+    // if (startPoint->prev == endPoint) {
+    //   break;
+    // }
     startPoint = startPoint->prev;
   }
+  ListNode *tempNext = startPoint->next;
+  startPoint->next = startPoint->prev;
+  startPoint->prev = tempNext;
   endPoint = tempStart;
-
 }
 
 /**
@@ -247,11 +248,69 @@ void List<T>::reverseNth(int n) {
   /// @todo Graded in MP3.2
   ListNode *toSwap = head_;
   ListNode *nextSwap = head_;
+<<<<<<< HEAD
   for (int i = 0; i < n; i++) {
     nextSwap = nextSwap->next;
+=======
+  ListNode *tempStart = toSwap;
+  ListNode *farNext = nextSwap;
+  ListNode *prevNextSwap = toSwap;
+  int counter = 0;
+  bool doesSwap = true;
+  while(doesSwap) {
+    for (int i = 0; i < n - 1; i++) {
+      if (nextSwap == nullptr){
+        doesSwap = false;
+        break;
+      }
+      nextSwap = nextSwap->next;
+      if (farNext != nullptr) {
+        farNext = farNext->next;
+        if (farNext != nullptr){
+          farNext = farNext->next;
+        }
+      }
+      
+    }
+    if (farNext != nullptr) {
+      farNext = farNext->next;
+    }
+
+    if (doesSwap) {
+      reverse(toSwap, nextSwap); 
+
+      if (counter == (length_/n) && length_%n == 0) {
+        //last swap
+        tail_ = nextSwap;
+      } else if (counter == (length_/n) - 1 && length_%n != 0) {
+        //last swap but there's still things left
+        nextSwap->next = toSwap->prev;
+      } else {
+        //last swap and farNext is an actual pointer
+        nextSwap->next = farNext; 
+      }
+
+      if (counter == 0){
+        //first swap, set head
+        head_ = toSwap;
+        ListNode *tempToSwap = toSwap;
+        toSwap = toSwap->prev;
+        tempToSwap->prev = nullptr;
+      } else {
+        //other swaps, set toSwap(last element now) 
+        ListNode *tempToSwap = toSwap;
+        toSwap = toSwap->prev;
+        tempToSwap->prev = prevNextSwap;
+      }
+      prevNextSwap = nextSwap;
+      nextSwap = toSwap;
+      farNext = toSwap;
+      
+    }
+    counter++;
+>>>>>>> 2e02fdda0b79caeea0e5adcce11e23b1e2f225de
   }
-  reverse(toSwap, nextSwap);
-  toSwap = nextSwap;
+  
 }
 
 
@@ -298,11 +357,8 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
   ListNode * tFirst = first;
   int i = 0;
   while(first != nullptr && second != nullptr) {
-    //std::cout << first->data << second->data << std::endl;
     
     if (first->next != nullptr) {
-      //std::cout << "first next:" << first->next->data << std::endl;
-      //std::cout << "second next:" << second->next->data << std::endl;
       //first still has data and needs the next thing to have a backpointer to the second
       if (first->data < second->data && second->data < first->next->data) {
         //second should go between first and first->next
@@ -339,13 +395,10 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
       
       
     } else {
-      std::cout << "first has run out" << std::endl;
       //first has run out of things, this one is the last item
       if (second->data < first->data) {
-        std::cout << "ey" << std::endl;
         //second still has data that needs to be put behind first
         secondNext = second->next;
-        std::cout << secondNext->data << std::endl;
         ListNode * tempFirstPrev = first->prev;
         first->prev = second;
         second->next = first;
@@ -357,7 +410,6 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
         }
         second = secondNext;
       } else {
-        std::cout << "yo" << std::endl;
         //first is the smallest thing, add the second and then let it go to null pointer so we get the rest of second
         first-> next = second;
         second->prev = first;
