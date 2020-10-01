@@ -44,6 +44,7 @@ void List<T>::_destroy() {
     if (i < length_ - 1) { //need this so that we don't try to access the next of a null pointer
       nextDelete = nextDelete->next;  
     }
+    std::cout << "deleting: " << toDelete->data << std::endl;
     delete toDelete;
     toDelete = nextDelete;
   }
@@ -223,17 +224,24 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
 
   ListNode *tempStart = startPoint;
-  while (startPoint != nullptr) {
+  ListNode *afterEnd = endPoint->next;
+  while (startPoint != endPoint) {
     ListNode *tempNext = startPoint->next;
     startPoint->next = startPoint->prev;
     startPoint->prev = tempNext;
-    if (startPoint->prev == nullptr) {
-      break;
-    }
+    // if (startPoint->prev == endPoint) {
+    //   break;
+    // }
     startPoint = startPoint->prev;
   }
+  ListNode *tempNext = startPoint->next;
+  startPoint->next = startPoint->prev;
+  startPoint->prev = tempNext;
   endPoint = tempStart;
-
+  if (afterEnd != nullptr) {
+    startPoint->next = afterEnd;
+    afterEnd->prev = startPoint;
+  }
 }
 
 /**
@@ -247,11 +255,41 @@ void List<T>::reverseNth(int n) {
   /// @todo Graded in MP3.2
   ListNode *toSwap = head_;
   ListNode *nextSwap = head_;
-  for (unsigned i = 0; i < n; i++) {
-    nextSwap = nextSwap->next;
-  }
-  reverse(toSwap, nextSwap);
-  toSwap = nextSwap;
+  ListNode *tempStart = toSwap;
+  bool doesSwap = true;
+  //while(doesSwap) {
+    for (int i = 0; i < n - 1; i++) {
+      if (nextSwap == nullptr){
+        doesSwap = false;
+        break;
+      }
+      nextSwap = nextSwap->next;
+      std::cout << "nextSwap now at: " << nextSwap->data << std::endl;
+    }
+    if (nextSwap->next == nullptr) {
+      std::cout << "no" << std::endl;
+      doesSwap = false;
+    }
+    if (doesSwap) {
+      //Some segmentation fault is happening with the reverse where it can only find the head and not the nexts of what has already been reversed.
+      reverse(toSwap, nextSwap); 
+      // ListNode *nextSectionStart = toSwap->prev;
+      // std::cout << "nextSectionStart" << nextSectionStart->data <<std::endl;
+      // for (int i = 0; i < n - 2; i++) {
+      //   if (nextSectionStart == nullptr){
+      //     doesSwap = false;
+      //     break;
+      //   }
+      //   nextSectionStart = nextSwap->next;
+
+      // }
+      // // nextSectionStart->prev = toSwap;
+      // toSwap->next = nextSectionStart;
+      toSwap = toSwap->prev;
+      nextSwap = toSwap;
+    }
+  //}
+  
 }
 
 
