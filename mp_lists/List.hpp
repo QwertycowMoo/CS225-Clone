@@ -44,7 +44,6 @@ void List<T>::_destroy() {
     if (i < length_ - 1) { //need this so that we don't try to access the next of a null pointer
       nextDelete = nextDelete->next;  
     }
-    std::cout << "deleting: " << toDelete->data << std::endl;
     delete toDelete;
     toDelete = nextDelete;
   }
@@ -222,9 +221,7 @@ void List<T>::reverse() {
 template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
-
   ListNode *tempStart = startPoint;
-  ListNode *afterEnd = endPoint->next;
   while (startPoint != endPoint) {
     ListNode *tempNext = startPoint->next;
     startPoint->next = startPoint->prev;
@@ -238,10 +235,6 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   startPoint->next = startPoint->prev;
   startPoint->prev = tempNext;
   endPoint = tempStart;
-  if (afterEnd != nullptr) {
-    startPoint->next = afterEnd;
-    afterEnd->prev = startPoint;
-  }
 }
 
 /**
@@ -256,39 +249,62 @@ void List<T>::reverseNth(int n) {
   ListNode *toSwap = head_;
   ListNode *nextSwap = head_;
   ListNode *tempStart = toSwap;
+  ListNode *farNext = nextSwap;
+  ListNode *prevNextSwap = toSwap;
+  int counter = 0;
   bool doesSwap = true;
-  //while(doesSwap) {
+  while(doesSwap) {
     for (int i = 0; i < n - 1; i++) {
       if (nextSwap == nullptr){
         doesSwap = false;
         break;
       }
       nextSwap = nextSwap->next;
-      std::cout << "nextSwap now at: " << nextSwap->data << std::endl;
+      if (farNext != nullptr) {
+        farNext = farNext->next;
+        if (farNext != nullptr){
+          farNext = farNext->next;
+        }
+      }
+      
     }
-    if (nextSwap->next == nullptr) {
-      std::cout << "no" << std::endl;
-      doesSwap = false;
+    if (farNext != nullptr) {
+      farNext = farNext->next;
     }
-    if (doesSwap) {
-      //Some segmentation fault is happening with the reverse where it can only find the head and not the nexts of what has already been reversed.
-      reverse(toSwap, nextSwap); 
-      // ListNode *nextSectionStart = toSwap->prev;
-      // std::cout << "nextSectionStart" << nextSectionStart->data <<std::endl;
-      // for (int i = 0; i < n - 2; i++) {
-      //   if (nextSectionStart == nullptr){
-      //     doesSwap = false;
-      //     break;
-      //   }
-      //   nextSectionStart = nextSwap->next;
 
-      // }
-      // // nextSectionStart->prev = toSwap;
-      // toSwap->next = nextSectionStart;
-      toSwap = toSwap->prev;
+    if (doesSwap) {
+      reverse(toSwap, nextSwap); 
+
+      if (counter == (length_/n) && length_%n == 0) {
+        //last swap
+        tail_ = nextSwap;
+      } else if (counter == (length_/n) - 1 && length_%n != 0) {
+        //last swap but there's still things left
+        nextSwap->next = toSwap->prev;
+      } else {
+        //last swap and farNext is an actual pointer
+        nextSwap->next = farNext; 
+      }
+
+      if (counter == 0){
+        //first swap, set head
+        head_ = toSwap;
+        ListNode *tempToSwap = toSwap;
+        toSwap = toSwap->prev;
+        tempToSwap->prev = nullptr;
+      } else {
+        //other swaps, set toSwap(last element now) 
+        ListNode *tempToSwap = toSwap;
+        toSwap = toSwap->prev;
+        tempToSwap->prev = prevNextSwap;
+      }
+      prevNextSwap = nextSwap;
       nextSwap = toSwap;
+      farNext = toSwap;
+      
     }
-  //}
+    counter++;
+  }
   
 }
 
@@ -336,11 +352,8 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
   ListNode * tFirst = first;
   int i = 0;
   while(first != nullptr && second != nullptr) {
-    //std::cout << first->data << second->data << std::endl;
     
     if (first->next != nullptr) {
-      //std::cout << "first next:" << first->next->data << std::endl;
-      //std::cout << "second next:" << second->next->data << std::endl;
       //first still has data and needs the next thing to have a backpointer to the second
       if (first->data < second->data && second->data < first->next->data) {
         //second should go between first and first->next
@@ -377,13 +390,10 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
       
       
     } else {
-      std::cout << "first has run out" << std::endl;
       //first has run out of things, this one is the last item
       if (second->data < first->data) {
-        std::cout << "ey" << std::endl;
         //second still has data that needs to be put behind first
         secondNext = second->next;
-        std::cout << secondNext->data << std::endl;
         ListNode * tempFirstPrev = first->prev;
         first->prev = second;
         second->next = first;
@@ -395,7 +405,6 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
         }
         second = secondNext;
       } else {
-        std::cout << "yo" << std::endl;
         //first is the smallest thing, add the second and then let it go to null pointer so we get the rest of second
         first-> next = second;
         second->prev = first;
