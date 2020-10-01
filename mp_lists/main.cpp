@@ -11,7 +11,7 @@ int main() {
 
   List<int> list1;
   List<int> list2;
-  /*
+
   PNG im1;       im1.readFromFile("tests/merge1.png");
   PNG im2;       im2.readFromFile("tests/merge2.png");
   PNG expected;  expected.readFromFile("tests/expected-merge.png");
@@ -44,19 +44,6 @@ int main() {
   }
 
   out.writeToFile("actual-merge.png");
-    */
-
-    for (int i = 0; i <= 100; i++) {
-        if (i%3==0) {
-            list1.insertFront(i);
-        } else {
-            list2.insertFront(i);
-        }
-    }
-
-    list1.mergeWith(list2);
-    list1.print();
-  
 
   return 0;
 }

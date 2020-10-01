@@ -299,7 +299,10 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
   int i = 0;
   while(first != nullptr && second != nullptr) {
     //std::cout << first->data << second->data << std::endl;
+    
     if (first->next != nullptr) {
+      //std::cout << "first next:" << first->next->data << std::endl;
+      //std::cout << "second next:" << second->next->data << std::endl;
       //first still has data and needs the next thing to have a backpointer to the second
       if (first->data < second->data && second->data < first->next->data) {
         //second should go between first and first->next
@@ -336,10 +339,13 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
       
       
     } else {
+      std::cout << "first has run out" << std::endl;
       //first has run out of things, this one is the last item
       if (second->data < first->data) {
+        std::cout << "ey" << std::endl;
         //second still has data that needs to be put behind first
         secondNext = second->next;
+        std::cout << secondNext->data << std::endl;
         ListNode * tempFirstPrev = first->prev;
         first->prev = second;
         second->next = first;
@@ -351,17 +357,13 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
         }
         second = secondNext;
       } else {
+        std::cout << "yo" << std::endl;
         //first is the smallest thing, add the second and then let it go to null pointer so we get the rest of second
-        first -> next = second;
-        second ->prev = first;
-        first = first->next;
-        second = second->next;
-      }
-      
-      
-    }
-    
-    
+        first-> next = second;
+        second->prev = first;
+        break;
+      }         
+    }   
   }
   
   return tFirst;
