@@ -247,7 +247,7 @@ void List<T>::reverseNth(int n) {
   /// @todo Graded in MP3.2
   ListNode *toSwap = head_;
   ListNode *nextSwap = head_;
-  for (unsigned i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     nextSwap = nextSwap->next;
   }
   reverse(toSwap, nextSwap);
