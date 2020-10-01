@@ -296,23 +296,24 @@ typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) 
 
   ListNode * secondNext;
   ListNode * tFirst = first;
-
+  int i = 0;
   while(first != nullptr && second != nullptr) {
-    std::cout << first->data << second->data << std::endl;
+    //std::cout << first->data << second->data << std::endl;
     if (first->next != nullptr) {
       //first still has data and needs the next thing to have a backpointer to the second
       if (first->data < second->data && second->data < first->next->data) {
         //second should go between first and first->next
         secondNext = second->next;
-        ListNode * tempFirstNext = first->next;
+        second->next = first->next;
+        first->next->prev = second;
         first->next = second;
         second->prev = first;
-        second->next = tempFirstNext;
-        tempFirstNext -> prev = second;
+       
+        
         second = secondNext;
         first = first->next;
 
-      } else if (second->data <= first->data) {
+      } else if (second->data < first->data) {
         //second should go before first 
         secondNext = second->next;
         ListNode * tempFirstPrev = first->prev;
