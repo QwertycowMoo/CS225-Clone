@@ -10,18 +10,15 @@ using namespace cs225;
 int main() {
   
   
-    List<int> list;
+  List<string> list;
 
-    
-    list.insertBack(1);
-    list.insertBack(2);
-    /*
-    list.insertBack(3);
-    list.insertBack(4);
-    */
 
-    list.print();
-    list.reverse();
-    list.print();
+  list.insertBack("c");
+  list.insertBack("b");
+  list.insertBack("a");
+
+  list.sort();
+
+  list.print();
   return 0;
 }
