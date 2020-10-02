@@ -204,7 +204,10 @@ void List<T>::tripleRotate() {
  */
 template <typename T>
 void List<T>::reverse() {
-  reverse(head_, tail_);
+  if (length_ > 0) {
+    reverse(head_, tail_);
+  }
+   
 }
 
 /**
@@ -227,9 +230,6 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
       ListNode *tempNext = startPoint->next;
       startPoint->next = startPoint->prev;
       startPoint->prev = tempNext;
-      // if (startPoint->prev == endPoint) {
-      //   break;
-      // }
       startPoint = startPoint->prev;
     }
     ListNode *tempNext = startPoint->next;
