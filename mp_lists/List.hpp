@@ -126,7 +126,7 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
     curr = curr->next;
   }
 
-  if (curr != NULL) {
+  if (curr != NULL && splitPoint > 0) {
     curr->prev->next = NULL;
     curr->prev = NULL;  
   }
@@ -222,19 +222,22 @@ template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
   ListNode *tempStart = startPoint;
-  while (startPoint != endPoint) {
+  if (startPoint != nullptr) {
+    while (startPoint != endPoint) {
+      ListNode *tempNext = startPoint->next;
+      startPoint->next = startPoint->prev;
+      startPoint->prev = tempNext;
+      // if (startPoint->prev == endPoint) {
+      //   break;
+      // }
+      startPoint = startPoint->prev;
+    }
     ListNode *tempNext = startPoint->next;
     startPoint->next = startPoint->prev;
     startPoint->prev = tempNext;
-    // if (startPoint->prev == endPoint) {
-    //   break;
-    // }
-    startPoint = startPoint->prev;
+    endPoint = tempStart;
   }
-  ListNode *tempNext = startPoint->next;
-  startPoint->next = startPoint->prev;
-  startPoint->prev = tempNext;
-  endPoint = tempStart;
+  
 }
 
 /**
@@ -253,9 +256,6 @@ void List<T>::reverseNth(int n) {
   ListNode *prevNextSwap = toSwap;
   int counter = 0;
   bool doesSwap = true;
-  std::cout << "length" << length_ << std::endl;
-  std::cout << "length%n" << length_%n << std::endl;
-  std::cout << "total reversals: " << length_/n << std::endl;
   for (int j = 0; j < length_/n; j++) {
     for (int i = 0; i < n - 1; i++) {
       if (nextSwap->next == nullptr){

@@ -9,26 +9,19 @@ using std::endl;
 using namespace cs225;
 int main() {
   
-  /*
-  List<int> list1;
   
-  for (int i = 1; i <= 6; i++) {
-    list1.insertBack(i);
-  }
-  list1.print();
-  list1.reverseNth(4);
-  list1.print();
-  */
+    List<int> list;
 
-  PNG in;        in.readFromFile("tests/alma.png");
-  PNG expected;  expected.readFromFile("tests/expected-reverseN_2.png");
+    
+    list.insertBack(1);
+    list.insertBack(2);
+    /*
+    list.insertBack(3);
+    list.insertBack(4);
+    */
 
-  List<HSLAPixel> list = imageToList(in);
-  
-  list.reverseNth(in.height() * 61);
-  
-  PNG out = listToImage(list, in.width(), in.height());
-  out.writeToFile("actual-reverseN_2.png");
-  
+    list.print();
+    list.reverse();
+    list.print();
   return 0;
 }
