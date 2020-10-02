@@ -5,6 +5,7 @@
 
 #include <iterator>
 #include <stack>
+#include <iostream>
 
 /**
  * A derived, templatized class for inorder traversal algorithms on trees.
@@ -25,7 +26,13 @@ class InorderTraversal : public TreeTraversal<T> {
     InorderTraversal(typename BinaryTree<T>::Node* root)
 	    : root(root)
     {
+      typename BinaryTree<T>::Node* tempRoot = root;
       stack.push(root);	
+      while(root->left != nullptr) { 
+        root = root->left;
+        stack.push(root);
+      }
+      root = tempRoot;
       // your code here
     }
 
@@ -61,6 +68,17 @@ class InorderTraversal : public TreeTraversal<T> {
      */	
     void add(typename BinaryTree<T>::Node *& treeNode) {
       // your code here
+      //std::cout << treeNode << std::endl;
+      if (treeNode->right != NULL) {
+          stack.push(treeNode->right);
+          typename BinaryTree<T>::Node* tempNode = stack.top();
+          while(tempNode->left != nullptr) {
+            stack.push(tempNode->left);
+            tempNode = tempNode->left;
+          }
+      }	
+      
+        
       return;	
     }
 

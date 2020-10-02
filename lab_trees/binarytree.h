@@ -172,6 +172,12 @@ class BinaryTree
         void printLeftToRight(const Node* subRoot) const;
 
 
+        /**
+         * Private helper function for the public mirror function.
+         * @param subRoot The current node in the recursion
+         */
+        void mirror(Node* subRoot);
+
 
 
         /**
@@ -207,6 +213,9 @@ class BinaryTree
          * @param treeVector stores nodes in order
          */
         void inOrder(Node *subRoot, std::vector<T>& treeVector);
+
+        
+        bool isOrderedRecursive(Node* subRoot, T toCompare, bool isLeft) const;
 };
 
 #include "binarytree_given.cpp"
