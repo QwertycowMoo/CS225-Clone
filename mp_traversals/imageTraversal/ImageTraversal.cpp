@@ -28,12 +28,22 @@ double ImageTraversal::calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2
   return sqrt( (h*h) + (s*s) + (l*l) );
 }
 
+
+
+/** @todo [Part 1] */
 /**
  * Default iterator constructor.
  */
-ImageTraversal::Iterator::Iterator() {
-  /** @todo [Part 1] */
+ImageTraversal::Iterator::Iterator(): _traversal(NULL) {
+  
 }
+
+ImageTraversal::Iterator::Iterator(ImageTraversal* traversal, Point & start, PNG & png, double tolerance): 
+_start(start), _tolerance(tolerance), _traversal(traversal), _png(png) {
+  _current = traversal->peek();
+  traversed.push_back(_current);
+}
+
 
 /**
  * Iterator increment opreator.
@@ -42,6 +52,24 @@ ImageTraversal::Iterator::Iterator() {
  */
 ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
+  if (!_traversal->empty()) {
+    _current = _traversal->pop();
+    _traversal->add(_current);
+    //check for repeats here
+    _current = _traversal->peek();
+    if (calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) > _tolerance) {
+      operator++();
+    } else {
+      for (Point visited : traversed) {
+        //if it has been visited, gotta get rid of it. Currently in an infinite loop
+        if (_current == visited) {
+          _traversal->pop();
+          operator++();
+          break;
+        }
+      }
+    }
+  }
   return *this;
 }
 
@@ -52,7 +80,7 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
  */
 Point ImageTraversal::Iterator::operator*() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return _current;
 }
 
 /**

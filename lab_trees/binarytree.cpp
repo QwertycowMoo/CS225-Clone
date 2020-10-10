@@ -146,11 +146,18 @@ bool BinaryTree<T>::isOrderedRecursive(Node* subRoot, T toCompare, bool isLeft) 
         }
         
     } else {
-        if (subRoot->elem >= toCompare) {
-            return isOrderedRecursive(subRoot->left, toCompare, false) && isOrderedRecursive(subRoot->right, subRoot->elem, false);
+        if (isOrderedRecursive(subRoot->left, subRoot->elem, true)) {
+            if (subRoot->elem >= toCompare) {
+                return isOrderedRecursive(subRoot->left, toCompare, false) && isOrderedRecursive(subRoot->right, subRoot->elem, false);
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
+        
+    
+        
     }
 }
 

@@ -14,6 +14,20 @@
 
 using namespace cs225;
 
+PNG getTestPNG() {
+  PNG png(4, 4);
+  HSLAPixel blackPixel(180, 1, 0);
+  
+  for (unsigned i = 0; i < 4; i++) {
+    png.getPixel(i, 0) = blackPixel;
+    png.getPixel(0, i) = blackPixel;
+    png.getPixel(i, 3) = blackPixel;
+    png.getPixel(3, i) = blackPixel;
+  }
+    
+  return png;
+}
+
 int main() {
 
   // @todo [Part 3]
@@ -26,7 +40,13 @@ int main() {
   lastFrame.writeToFile("myFloodFill.png");
   animation.write("myFloodFill.gif");
   */
-
+  PNG png = getTestPNG();
+  Point startPoint(1, 1);
+  
+  DFS dfs(png, startPoint, 0.2);
+  ImageTraversal::Iterator it = dfs.begin();
+  ++it;
+  std::cout << *it << std::endl;
 
   return 0;
 }

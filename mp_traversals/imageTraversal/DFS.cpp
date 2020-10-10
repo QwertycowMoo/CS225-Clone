@@ -22,8 +22,9 @@
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this DFS
  */
-DFS::DFS(const PNG & png, const Point & start, double tolerance) {  
+DFS::DFS(const PNG & png, const Point & start, double tolerance): _png(png), _start(start), _tolerance(tolerance) {  
   /** @todo [Part 1] */
+  stack.push(start);
 }
 
 /**
@@ -31,7 +32,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  return ImageTraversal::Iterator(this, _start, _png, _tolerance);
 }
 
 /**
@@ -47,6 +48,37 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
+  //first check if we already visited this point
+  bool toAdd = true;
+  for (Point visit : visited) { //for each
+    if (point == visit) {
+      toAdd = false;
+    }
+  }
+  //add all the neighbors according to the rules
+  if (toAdd) {
+    std::cout << point.x << point.y << std::endl;
+    if (point.x + 1 < _png.width()) {
+      Point rightNeighbor(point.x + 1, point.y);
+      stack.push(rightNeighbor);
+    }
+    std::cout << point.x << point.y << std::endl;
+    if (point.y + 1 < _png.height()) {
+      Point bottomNeighbor(point.x, point.y + 1);
+      stack.push(bottomNeighbor);
+    }
+    std::cout << point.x << point.y << std::endl;
+    if (point.x > 0) {
+      Point leftNeighbor(point.x - 1, point.y);
+      stack.push(leftNeighbor);
+    }
+    std::cout << point.x << " " << point.y << std::endl;
+    if (point.y > 0) {
+      Point topNeighbor(point.x, point.y - 1);
+      stack.push(topNeighbor);
+    }
+    
+  }
 }
 
 /**
@@ -54,7 +86,9 @@ void DFS::add(const Point & point) {
  */
 Point DFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point toReturn = stack.top();
+  stack.pop();
+  return toReturn;
 }
 
 /**
@@ -62,7 +96,13 @@ Point DFS::pop() {
  */
 Point DFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if (!empty()) {
+    return stack.top();
+    
+  } else {
+    return _start;
+  }
+
 }
 
 /**
@@ -70,5 +110,10 @@ Point DFS::peek() const {
  */
 bool DFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  if (stack.empty()) {
+    return true;
+  } else {
+    return false;
+  }
+
 }

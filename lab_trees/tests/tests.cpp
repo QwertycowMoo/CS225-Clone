@@ -24,7 +24,7 @@ typename BinaryTree<int>::Node* genNonIsOrderedTreeLeft()
   zero_node->left = five_node;
   zero_node->right = new typename BinaryTree<int>::Node(3);
   zero_node->right->right = new typename BinaryTree<int>::Node(4);
-  typename BinaryTree<int>::Node* seven_node = new typename BinaryTree<int>::Node(7);
+  typename BinaryTree<int>::Node* seven_node = new typename BinaryTree<int>::Node(3);
   seven_node->left = new typename BinaryTree<int>::Node(10);
   seven_node->right = new typename BinaryTree<int>::Node(9);
   typename BinaryTree<int>::Node* root = new typename BinaryTree<int>::Node(6);
@@ -37,7 +37,7 @@ typename BinaryTree<int>::Node* genNonIsOrderedTreeRight()
 {
   typename BinaryTree<int>::Node* root = new typename BinaryTree<int>::Node(4);
   typename BinaryTree<int>::Node* six_node = new typename BinaryTree<int>::Node(6);
-  six_node->left = new typename BinaryTree<int>::Node(3);
+  six_node->left = new typename BinaryTree<int>::Node(7); //was 3
   six_node->right = new typename BinaryTree<int>::Node(8);
   root->right = six_node;
   typename BinaryTree<int>::Node* two_node = new typename BinaryTree<int>::Node(1);
