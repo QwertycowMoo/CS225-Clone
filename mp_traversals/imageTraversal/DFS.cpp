@@ -24,7 +24,7 @@
  */
 DFS::DFS(const PNG & png, const Point & start, double tolerance): _png(png), _start(start), _tolerance(tolerance) {  
   /** @todo [Part 1] */
-  stack.push(start);
+  add(_start);
 }
 
 /**
@@ -48,37 +48,30 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
-  //first check if we already visited this point
-  bool toAdd = true;
-  for (Point visit : visited) { //for each
-    if (point == visit) {
-      toAdd = false;
+
+  if (ImageTraversal::calculateDelta(png.getPixel(_start.x, _start.y), png.getPixel(point.x, point.y)) < _tolerance) {
+    stack.push(point);
+    if (_current.x + 1 < _png.width()) {
+      Point rightNeighbor(_current.x + 1, _current.y);
+      add(rightNeighbor);
+    }
+
+    if (_current.y + 1 < _png.height()) {
+      Point bottomNeighbor(_current.x, _current.y + 1);
+      add(bottomNeighbor);
+    }
+
+    if (_current.x > 0) {
+      Point leftNeighbor(_current.x - 1, _current.y);
+      add(leftNeighbor);
+    }
+
+    if (_current.y > 0) {
+      Point topNeighbor(_current.x, _current.y - 1);
+      add(topNeighbor);
     }
   }
-  //add all the neighbors according to the rules
-  if (toAdd) {
-    std::cout << point.x << point.y << std::endl;
-    if (point.x + 1 < _png.width()) {
-      Point rightNeighbor(point.x + 1, point.y);
-      stack.push(rightNeighbor);
-    }
-    std::cout << point.x << point.y << std::endl;
-    if (point.y + 1 < _png.height()) {
-      Point bottomNeighbor(point.x, point.y + 1);
-      stack.push(bottomNeighbor);
-    }
-    std::cout << point.x << point.y << std::endl;
-    if (point.x > 0) {
-      Point leftNeighbor(point.x - 1, point.y);
-      stack.push(leftNeighbor);
-    }
-    std::cout << point.x << " " << point.y << std::endl;
-    if (point.y > 0) {
-      Point topNeighbor(point.x, point.y - 1);
-      stack.push(topNeighbor);
-    }
-    
-  }
+  
 }
 
 /**
@@ -98,7 +91,6 @@ Point DFS::peek() const {
   /** @todo [Part 1] */
   if (!empty()) {
     return stack.top();
-    
   } else {
     return _start;
   }

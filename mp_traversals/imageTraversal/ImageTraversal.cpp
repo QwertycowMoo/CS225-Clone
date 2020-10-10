@@ -54,21 +54,49 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
   if (!_traversal->empty()) {
     _current = _traversal->pop();
-    _traversal->add(_current);
-    //check for repeats here
+    
+    // if (_current.x + 1 < _png.width()) {
+    //   Point rightNeighbor(_current.x + 1, _current.y);
+    //   _traversal->add(rightNeighbor);
+    // }
+
+    // if (_current.y + 1 < _png.height()) {
+    //   Point bottomNeighbor(_current.x, _current.y + 1);
+    //   _traversal->add(bottomNeighbor);
+    // }
+
+    // if (_current.x > 0) {
+    //   Point leftNeighbor(_current.x - 1, _current.y);
+    //   _traversal->add(leftNeighbor);
+    // }
+
+    // if (_current.y > 0) {
+    //   Point topNeighbor(_current.x, _current.y - 1);
+    //   _traversal->add(topNeighbor);
+    // }
     _current = _traversal->peek();
-    if (calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) > _tolerance) {
-      operator++();
-    } else {
+
+    while (calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) > _tolerance) {
+      std::cout << "Delta is: " << calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) << std::endl;
+      _traversal->pop();
+      _current = _traversal->peek();
+    } 
+    bool alreadyVisit = true;
+    while (alreadyVisit) {
+      alreadyVisit = false;
       for (Point visited : traversed) {
         //if it has been visited, gotta get rid of it. Currently in an infinite loop
         if (_current == visited) {
+          alreadyVisit = true;
           _traversal->pop();
-          operator++();
+          _current = _traversal->peek();
           break;
         }
       }
+
     }
+      
+    
   }
   return *this;
 }
