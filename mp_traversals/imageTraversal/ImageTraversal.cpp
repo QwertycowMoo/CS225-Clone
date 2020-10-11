@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iterator>
 #include <iostream>
+#include <vector>
 
 #include "../cs225/HSLAPixel.h"
 #include "../cs225/PNG.h"
@@ -40,8 +41,16 @@ ImageTraversal::Iterator::Iterator(): _traversal(NULL) {
 
 ImageTraversal::Iterator::Iterator(ImageTraversal* traversal, Point & start, PNG & png, double tolerance): 
 _start(start), _tolerance(tolerance), _traversal(traversal), _png(png) {
+  //std::cout << "iterator constructor reached" << std::endl;
   _current = traversal->peek();
-  traversed.push_back(_current);
+  _traversed = std::vector<std::vector<bool>>(png.width());
+  for (unsigned i = 0; i < png.width(); i++) {
+    _traversed[i] = std::vector<bool>(png.height());
+    for (unsigned j = 0; j < png.height(); j++) {
+      _traversed[i][j] = false;
+    }
+  }
+  _traversed[_current.x][_current.y] = true;
 }
 
 
@@ -52,52 +61,61 @@ _start(start), _tolerance(tolerance), _traversal(traversal), _png(png) {
  */
 ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
+  
   if (!_traversal->empty()) {
+    //std::cout << "not empty" << std::endl;
+
     _current = _traversal->pop();
-    
-    // if (_current.x + 1 < _png.width()) {
-    //   Point rightNeighbor(_current.x + 1, _current.y);
-    //   _traversal->add(rightNeighbor);
-    // }
 
-    // if (_current.y + 1 < _png.height()) {
-    //   Point bottomNeighbor(_current.x, _current.y + 1);
-    //   _traversal->add(bottomNeighbor);
-    // }
+    //std::cout << "current is: " << _current.x << _current.y << std::endl;
+    //add first then check if repeat
+    if (_current.x + 1 < _png.width()) {
+      Point rightNeighbor(_current.x + 1, _current.y);
+      //std::cout << "adding : " << rightNeighbor.x << rightNeighbor.y << std::endl;
+      _traversal->add(rightNeighbor);
+    }
 
-    // if (_current.x > 0) {
-    //   Point leftNeighbor(_current.x - 1, _current.y);
-    //   _traversal->add(leftNeighbor);
-    // }
+    if (_current.y + 1 < _png.height()) {
+      Point bottomNeighbor(_current.x, _current.y + 1);
+      //std::cout << "adding : " << bottomNeighbor.x << bottomNeighbor.y << std::endl;
+      _traversal->add(bottomNeighbor);
+    }
 
-    // if (_current.y > 0) {
-    //   Point topNeighbor(_current.x, _current.y - 1);
-    //   _traversal->add(topNeighbor);
-    // }
+    if (_current.x > 0) {
+      Point leftNeighbor(_current.x - 1, _current.y);
+      //std::cout << "adding : " << leftNeighbor.x << leftNeighbor.y << std::endl;
+      _traversal->add(leftNeighbor);
+    }
+
+    if (_current.y > 0) {
+      Point topNeighbor(_current.x, _current.y - 1);
+      //std::cout << "adding : " << topNeighbor.x << topNeighbor.y << std::endl;
+      _traversal->add(topNeighbor);
+    }
     _current = _traversal->peek();
 
-    while (calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) > _tolerance) {
-      std::cout << "Delta is: " << calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) << std::endl;
+
+    while (calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) > _tolerance ||
+     _traversed[_current.x][_current.y] == true) {
+       
       _traversal->pop();
       _current = _traversal->peek();
-    } 
-    bool alreadyVisit = true;
-    while (alreadyVisit) {
-      alreadyVisit = false;
-      for (Point visited : traversed) {
-        //if it has been visited, gotta get rid of it. Currently in an infinite loop
-        if (_current == visited) {
-          alreadyVisit = true;
-          _traversal->pop();
-          _current = _traversal->peek();
-          break;
-        }
+      //std::cout << "current: " << _current.x << _current.y << std::endl;
+      if (_traversal->empty()) {
+        _traversal = NULL;
+        return *this;
       }
-
     }
-      
+
+
+     _traversed[_current.x][_current.y] = true;
     
+    //std::cout << "outside delta loop: " << calculateDelta(_png.getPixel(_start.x, _start.y), _png.getPixel(_current.x, _current.y)) << std::endl;
+    //std::cout << "traversed boolean table: " << _traversed[_current.x][_current.y] << std::endl;
+    //std::cout << std::endl;
+    return *this;
   }
+  _traversal = NULL;
   return *this;
 }
 
@@ -118,6 +136,9 @@ Point ImageTraversal::Iterator::operator*() {
  */
 bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
   /** @todo [Part 1] */
-  return false;
+  if (_traversal == other._traversal) {
+    return false;
+  }
+  return true;
 }
 

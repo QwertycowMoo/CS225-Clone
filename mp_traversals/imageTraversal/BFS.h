@@ -39,5 +39,4 @@ private:
   Point _start;
   double _tolerance;
   std::queue<Point> queue;
-  std::vector<Point> visited;
 };

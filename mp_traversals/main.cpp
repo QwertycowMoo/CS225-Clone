@@ -43,10 +43,11 @@ int main() {
   PNG png = getTestPNG();
   Point startPoint(1, 1);
   
-  DFS dfs(png, startPoint, 0.2);
-  ImageTraversal::Iterator it = dfs.begin();
-  ++it;
-  std::cout << *it << std::endl;
+  DFS t(png, startPoint, 0.2);
+  unsigned count = 0;
+  for (auto p = t.begin(); p != t.end(); ++p) {
+    count++;
+  }
 
   return 0;
 }

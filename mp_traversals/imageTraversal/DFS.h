@@ -39,6 +39,6 @@ private:
   Point _start;
   double _tolerance;
   std::stack<Point> stack;
-  std::vector<Point> visited;
+
 
 };

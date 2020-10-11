@@ -27,6 +27,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance): _png(png), _st
   add(_start);
 }
 
+
 /**
  * Returns an iterator for the traversal starting at the first point.
  */
@@ -40,6 +41,7 @@ ImageTraversal::Iterator DFS::begin() {
  */
 ImageTraversal::Iterator DFS::end() {
   /** @todo [Part 1] */
+
   return ImageTraversal::Iterator();
 }
 
@@ -48,29 +50,7 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
-
-  if (ImageTraversal::calculateDelta(png.getPixel(_start.x, _start.y), png.getPixel(point.x, point.y)) < _tolerance) {
     stack.push(point);
-    if (_current.x + 1 < _png.width()) {
-      Point rightNeighbor(_current.x + 1, _current.y);
-      add(rightNeighbor);
-    }
-
-    if (_current.y + 1 < _png.height()) {
-      Point bottomNeighbor(_current.x, _current.y + 1);
-      add(bottomNeighbor);
-    }
-
-    if (_current.x > 0) {
-      Point leftNeighbor(_current.x - 1, _current.y);
-      add(leftNeighbor);
-    }
-
-    if (_current.y > 0) {
-      Point topNeighbor(_current.x, _current.y - 1);
-      add(topNeighbor);
-    }
-  }
   
 }
 
@@ -79,9 +59,14 @@ void DFS::add(const Point & point) {
  */
 Point DFS::pop() {
   /** @todo [Part 1] */
-  Point toReturn = stack.top();
-  stack.pop();
-  return toReturn;
+  if (!empty()) {
+    Point toReturn = stack.top();
+    stack.pop();
+    return toReturn;
+  } else {
+    return _start;
+  }
+  
 }
 
 /**

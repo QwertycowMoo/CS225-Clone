@@ -56,9 +56,15 @@ void BFS::add(const Point & point) {
  */
 Point BFS::pop() {
   /** @todo [Part 1] */
-  Point toReturn = queue.front();
-  queue.pop();
-  return toReturn;
+
+  if (!empty()) {
+    Point toReturn = queue.front();
+    queue.pop();
+    return toReturn;
+  } else {
+    return _start;
+  }
+  
 }
 
 /**
@@ -66,11 +72,8 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-   if (!empty()) {
     return queue.front();
-  } else {
-    return _start;
-  }
+
 
 }
 

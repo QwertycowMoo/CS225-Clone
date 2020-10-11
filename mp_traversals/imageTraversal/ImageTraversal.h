@@ -45,7 +45,7 @@ public:
     Point _start;
     double _tolerance;
     ImageTraversal* _traversal;
-    std::vector<Point> traversed;
+    std::vector<std::vector<bool>> _traversed;
     PNG _png;
   };
 
