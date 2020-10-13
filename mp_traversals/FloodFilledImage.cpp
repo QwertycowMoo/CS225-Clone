@@ -1,6 +1,7 @@
 #include "cs225/PNG.h"
 #include <list>
 #include <iostream>
+#include <type_traits>
 
 #include "colorPicker/ColorPicker.h"
 #include "imageTraversal/ImageTraversal.h"
@@ -16,8 +17,9 @@ using namespace cs225;
  * 
  * @param png The starting image of a FloodFilledImage
  */
-FloodFilledImage::FloodFilledImage(const PNG & png) {
+FloodFilledImage::FloodFilledImage(const PNG & png): _png(png) {
   /** @todo [Part 2] */
+
 }
 
 /**
@@ -29,6 +31,8 @@ FloodFilledImage::FloodFilledImage(const PNG & png) {
  */
 void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & colorPicker) {
   /** @todo [Part 2] */
+  _traversal = &traversal;
+  _colorpicker = &colorPicker;
 }
 
 /**
@@ -51,7 +55,29 @@ void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & co
  *   - The final frame, after all pixels have been filed)
  */ 
 Animation FloodFilledImage::animate(unsigned frameInterval) const {
+  std::cout << _png.width() << std::endl;
+  PNG tempPNG = _png;
   Animation animation;
   /** @todo [Part 2] */
+  animation.addFrame(tempPNG);
+  unsigned frame = 0;
+  for (auto it = _traversal->begin(); it != _traversal->end(); ++it) {
+    Point toFill = *it;
+    //need to do this because we don't have a "=" operator for HSLAPixel or a copy constructor
+    HSLAPixel & toChangePixel = tempPNG.getPixel(toFill.x, toFill.y);
+    HSLAPixel colorPixel = _colorpicker->getColor(toFill.x, toFill.y);
+    toChangePixel.h = colorPixel.h;
+    toChangePixel.s = colorPixel.s;
+    toChangePixel.l = colorPixel.l;
+    toChangePixel.a = colorPixel.a;
+    frame++;
+    if (frame % frameInterval == 0) {
+      std::cout << "adding frame: " << frame << std::endl;
+      //so the png has to be const?
+      animation.addFrame(tempPNG);
+      std::cout << "animation has: " << animation.frameCount() << std::endl;
+    }
+  }
+  animation.addFrame(tempPNG);
   return animation;
 }

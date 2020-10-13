@@ -30,5 +30,9 @@ public:
 private:
 	/** @todo [Part 2] */
 	/** add private members here*/
+  PNG _png;
+  Animation _animation;
+  ImageTraversal * _traversal;
+  ColorPicker * _colorpicker;
 
 };
