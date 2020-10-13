@@ -55,7 +55,6 @@ void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & co
  *   - The final frame, after all pixels have been filed)
  */ 
 Animation FloodFilledImage::animate(unsigned frameInterval) const {
-  std::cout << _png.width() << std::endl;
   PNG tempPNG = _png;
   Animation animation;
   /** @todo [Part 2] */
@@ -72,10 +71,7 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
     toChangePixel.a = colorPixel.a;
     frame++;
     if (frame % frameInterval == 0) {
-      std::cout << "adding frame: " << frame << std::endl;
-      //so the png has to be const?
       animation.addFrame(tempPNG);
-      std::cout << "animation has: " << animation.frameCount() << std::endl;
     }
   }
   animation.addFrame(tempPNG);
