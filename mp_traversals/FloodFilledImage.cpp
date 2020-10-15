@@ -31,8 +31,8 @@ FloodFilledImage::FloodFilledImage(const PNG & png): _png(png) {
  */
 void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & colorPicker) {
   /** @todo [Part 2] */
-  _traversal = &traversal;
-  _colorpicker = &colorPicker;
+  _traversals.push_back(&traversal);
+  _colorpickers.push_back(&colorPicker);
 }
 
 /**
@@ -59,21 +59,26 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
   Animation animation;
   /** @todo [Part 2] */
   animation.addFrame(tempPNG);
-  unsigned frame = 0;
-  for (auto it = _traversal->begin(); it != _traversal->end(); ++it) {
-    Point toFill = *it;
-    //need to do this because we don't have a "=" operator for HSLAPixel or a copy constructor
-    HSLAPixel & toChangePixel = tempPNG.getPixel(toFill.x, toFill.y);
-    HSLAPixel colorPixel = _colorpicker->getColor(toFill.x, toFill.y);
-    toChangePixel.h = colorPixel.h;
-    toChangePixel.s = colorPixel.s;
-    toChangePixel.l = colorPixel.l;
-    toChangePixel.a = colorPixel.a;
-    frame++;
-    if (frame % frameInterval == 0) {
-      animation.addFrame(tempPNG);
+  for (unsigned i = 0; i < _traversals.size(); ++i) {
+    unsigned frame = 0;
+    ImageTraversal * _traversal = _traversals[i];
+    ColorPicker * _colorpicker = _colorpickers[i];
+    for (auto it = _traversal->begin(); it != _traversal->end(); ++it) {
+      Point toFill = *it;
+      //need to do this because we don't have a "=" operator for HSLAPixel or a copy constructor
+      HSLAPixel & toChangePixel = tempPNG.getPixel(toFill.x, toFill.y);
+      HSLAPixel colorPixel = _colorpicker->getColor(toFill.x, toFill.y);
+      toChangePixel.h = colorPixel.h;
+      toChangePixel.s = colorPixel.s;
+      toChangePixel.l = colorPixel.l;
+      toChangePixel.a = colorPixel.a;
+      frame++;
+      if (frame % frameInterval == 0) {
+        animation.addFrame(tempPNG);
+      }
     }
   }
+  
   animation.addFrame(tempPNG);
   return animation;
 }

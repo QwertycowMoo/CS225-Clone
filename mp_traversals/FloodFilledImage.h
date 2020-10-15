@@ -32,7 +32,7 @@ private:
 	/** add private members here*/
   PNG _png;
   Animation _animation;
-  ImageTraversal * _traversal;
-  ColorPicker * _colorpicker;
+  std::vector<ImageTraversal*> _traversals;
+  std::vector<ColorPicker*> _colorpickers;
 
 };

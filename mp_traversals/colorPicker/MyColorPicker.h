@@ -14,5 +14,4 @@ public:
   HSLAPixel getColor(unsigned x, unsigned y);
 
 private:
-
 };

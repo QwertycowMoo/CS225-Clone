@@ -14,19 +14,6 @@
 
 using namespace cs225;
 
-PNG getTestPNG() {
-  PNG png(4, 4);
-  HSLAPixel blackPixel(180, 1, 0);
-  
-  for (unsigned i = 0; i < 4; i++) {
-    png.getPixel(i, 0) = blackPixel;
-    png.getPixel(0, i) = blackPixel;
-    png.getPixel(i, 3) = blackPixel;
-    png.getPixel(3, i) = blackPixel;
-  }
-    
-  return png;
-}
 
 int main() {
 
@@ -34,20 +21,21 @@ int main() {
   // - The code below assumes you have an Animation called `animation`
   // - The code provided below produces the `myFloodFill.png` file you must
   //   submit Part 3 of this assignment -- uncomment it when you're ready.
-  
-  /*
+  PNG toFill;
+  toFill.readFromFile("./tests/i.png");
+  FloodFilledImage myFloodFill(toFill);
+  DFS dfs1(toFill, Point(40, 40), 0.05); //inside orange part of the I
+  MyColorPicker cp;
+  BFS bfs1(toFill, Point(0, 0), 0.05);
+  RainbowColorPicker rainbow(.02);  //outside blue part of the I
+
+  myFloodFill.addFloodFill(dfs1, cp);
+  myFloodFill.addFloodFill(bfs1, rainbow);
+
+  Animation animation = myFloodFill.animate(1000);
   PNG lastFrame = animation.getFrame( animation.frameCount() - 1 );
   lastFrame.writeToFile("myFloodFill.png");
   animation.write("myFloodFill.gif");
-  */
-  PNG png = getTestPNG();
-  Point startPoint(1, 1);
   
-  DFS t(png, startPoint, 0.2);
-  unsigned count = 0;
-  for (auto p = t.begin(); p != t.end(); ++p) {
-    count++;
-  }
-
   return 0;
 }

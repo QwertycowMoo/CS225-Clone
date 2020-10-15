@@ -12,5 +12,16 @@ using namespace cs225;
  */
 HSLAPixel MyColorPicker::getColor(unsigned x, unsigned y) {
   /* @todo [Part 3] */
-  return HSLAPixel();
+  //should be a candy cane texture;
+  double h,s,l;
+  if (((x+y) % 5) == 0 || ((x+y) % 6) == 0) {
+    h = 0;
+    s = 1.0;
+    l = 1.0;
+  } else {
+    h = 0;
+    s = 1.0;
+    l = .5;
+  }
+  return HSLAPixel(h,s,l);
 }
