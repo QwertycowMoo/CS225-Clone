@@ -93,6 +93,15 @@ class AVLTree
     V find(const K& key) const;
 
     /**
+     * gets the IOP
+     */
+    Node* findIOP(Node*& root);
+
+    /**
+     * gets the IOP
+     */
+    Node* findIOPTop(Node*& root);
+    /**
      * Prints the function calls to a stream.
      * @param out The stream to print to (default is stdout)
      */

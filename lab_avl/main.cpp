@@ -184,10 +184,15 @@ void testManyRemovals()
     tree.insert(71, "data for 71");
     tree.insert(82, "data for 82");
     tree.remove(95);
-    tree.remove(94);;
+    tree.print();
+    tree.remove(94);
+    tree.print();
     tree.remove(61);
+    tree.print();
     tree.remove(76);
+    tree.print();
     tree.remove(73);
+    tree.print();
     tree.remove(71);
     tree.print();
     printEnd();
