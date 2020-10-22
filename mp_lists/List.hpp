@@ -204,7 +204,10 @@ void List<T>::tripleRotate() {
  */
 template <typename T>
 void List<T>::reverse() {
-  reverse(head_, tail_);
+  if (length_ > 0) {
+    reverse(head_, tail_);
+  }
+   
 }
 
 /**
@@ -227,9 +230,6 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
       ListNode *tempNext = startPoint->next;
       startPoint->next = startPoint->prev;
       startPoint->prev = tempNext;
-      // if (startPoint->prev == endPoint) {
-      //   break;
-      // }
       startPoint = startPoint->prev;
     }
     ListNode *tempNext = startPoint->next;
@@ -276,16 +276,13 @@ void List<T>::reverseNth(int n) {
 
     //reverse needs to reverse the rest even if its not complete
     reverse(toSwap, nextSwap); 
-    std::cout << toSwap->data << " to " << nextSwap->data << std::endl;
     if (j == (length_/n) - 1 && length_%n == 0) {
-      std::cout << "last" << std::endl;
       //last swap
       tail_ = nextSwap;
       nextSwap->next = toSwap->prev;
     } else if (j == (length_/n) - 1 && length_%n != 0) {
-      std::cout << "things left" << std::endl;
+      
       //last swap but there's still things left
-      std::cout << "still need to swap" << toSwap->prev->data << " and " << tail_->data << std::endl;
       reverse(toSwap->prev, tail_);
       nextSwap->next = toSwap->prev;
       tail_->next = nullptr;

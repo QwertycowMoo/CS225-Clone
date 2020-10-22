@@ -12,13 +12,10 @@ int main() {
   
   List<string> list;
 
-
-  list.insertBack("c");
-  list.insertBack("b");
-  list.insertBack("a");
-
-  list.sort();
-
+  
   list.print();
+  list.reverse();
+  list.print();
+
   return 0;
 }
