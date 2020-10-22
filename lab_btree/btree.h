@@ -344,7 +344,8 @@ size_t insertion_idx(const std::vector<T>& elements, const C& val)
     /* TODO Your code goes here! */
     size_t index = 0;
     for (auto it = elements.begin(); it != elements.end(); ++it) {
-        if (*it == val) {
+        std::cout << index << std::endl;
+        if (val < *it || val == *it) {
             break;
         }
         index++;

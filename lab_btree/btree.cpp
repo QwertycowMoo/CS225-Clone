@@ -26,11 +26,18 @@ template <class K, class V>
 V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
 {
     /* TODO Finish this function */
-
+    if (subroot == nullptr) {
+        return V();
+    }
     size_t first_larger_idx = insertion_idx(subroot->elements, key);
-
+    
     /* If first_larger_idx is a valid index and the key there is the key we
      * are looking for, we are done. */
+    if (first_larger_idx < subroot->elements.size()){
+        if (subroot->elements[first_larger_idx].key == key) {
+            return subroot->elements[first_larger_idx].value;
+        }
+    }
 
     /* Otherwise, we need to figure out which child to explore. For this we
      * can actually just use first_larger_idx directly. E.g.
@@ -43,7 +50,7 @@ V BTree<K, V>::find(const BTreeNode* subroot, const K& key) const
      * anywhere in the tree and return the default V.
      */
 
-    return V();
+    return find(subroot->children[first_larger_idx], key);
 }
 
 /**
@@ -141,6 +148,27 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
 
 
     /* TODO Your code goes here! */
+
+    //add the midpoint child element to the parent
+    *elem_itr = *mid_elem_itr;
+
+    //set pointer to the new right because left is already pointing there
+    *child_itr = new_right;
+
+    new_left->elements.erase(mid_elem_itr, child->elements.end());
+    new_left->children.erase(mid_child_itr, child->children.end());
+
+    //add all the children on the right side to the new right
+    for (auto it = mid_child_itr; it != child->children.end(); ++it) {
+        new_right->children.push_back(*it);
+    }
+    //add all the elements on the right side that are after the mid point
+    for (auto it = ++mid_elem_itr; it != child->elements.end(); ++it) {
+        new_right->elements.push_back(*it);
+    }
+    
+
+    
 }
 
 /**
@@ -162,7 +190,20 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
      * and thus needs to be split to maintain order.
      */
 
+    //maybe need to do operations on subroot child so we can keep track of parent?
     size_t first_larger_idx = insertion_idx(subroot->elements, pair);
 
     /* TODO Your code goes here! */
+    if (subroot->is_leaf) {
+        subroot->elements[first_larger_idx] = pair;
+    } else {
+        insert(subroot->children[first_larger_idx], pair);
+    }
+
+    //check for valid
+    //Need a way to pass in the parent, maybe change the helper function to also take a parent TreeNode
+    if (subroot->elements.size() > order) {
+        split_child(subroot, first_larger_idx);
+    }
+    
 }
