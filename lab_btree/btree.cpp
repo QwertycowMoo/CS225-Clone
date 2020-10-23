@@ -66,7 +66,7 @@ void BTree<K, V>::insert(const K& key, const V& value)
     if (root == nullptr) {
         root = new BTreeNode(true, order);
     }
-    insert(root, DataPair(key, value));
+    insert(root, nullptr, DataPair(key, value));
     /* Increase height by one by tossing up one element from the old
      * root node. */
     if (root->elements.size() >= order) {
@@ -150,15 +150,23 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
     /* TODO Your code goes here! */
 
     //add the midpoint child element to the parent
-    *elem_itr = *mid_elem_itr;
+    std::cout << "mid_elem_itr" << (*mid_elem_itr).key << std::endl;
+    //this feels very wrong
+    unsigned i = 0;
+    for (auto it = parent->elements.begin(); it != elem_itr; it++, i++) {}
+    
+    parent->elements.insert(elem_itr, *mid_elem_itr);
+    parent->children.insert(child_itr, new_right);
+    std::cout << "elem_itr" << (*elem_itr).key << std::endl;
 
     //set pointer to the new right because left is already pointing there
     *child_itr = new_right;
 
-    new_left->elements.erase(mid_elem_itr, child->elements.end());
-    new_left->children.erase(mid_child_itr, child->children.end());
 
+    
     //add all the children on the right side to the new right
+    
+    std::cout << "child: " << *child << std::endl;
     for (auto it = mid_child_itr; it != child->children.end(); ++it) {
         new_right->children.push_back(*it);
     }
@@ -166,9 +174,25 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
     for (auto it = ++mid_elem_itr; it != child->elements.end(); ++it) {
         new_right->elements.push_back(*it);
     }
+    std::cout << "new right side : " << *new_right << std::endl;
     
+    std::cout << "mid element: " << (*mid_elem_itr).key << std::endl;
+    new_left->elements.erase(--mid_elem_itr, child->elements.end()); //we don't want the middle element so --
+    if (!new_left->is_leaf) {
+        new_left->children.erase(--mid_child_itr, child->children.end());
+    }
+    
+    std::cout << "new left: " << *new_left << std::endl;
 
-    
+    std::cout << "parent is now: " << std::endl << *parent << std::endl;
+
+    for (auto element : parent->children) {
+        std::cout << "element in parent: " << *element <<std::endl;
+        std::cout << "size " << (*element).elements.size() << std::endl;
+    }
+
+    std::cout << "----------------------------------------" << std::endl;
+
 }
 
 /**
@@ -179,7 +203,7 @@ void BTree<K, V>::split_child(BTreeNode* parent, size_t child_idx)
  * write an equivalent seemed more instructive.
  */
 template <class K, class V>
-void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
+void BTree<K, V>::insert(BTreeNode* subroot, BTreeNode* parent, const DataPair& pair)
 {
     /* There are two cases to consider.
      * If the subroot is a leaf node and the key doesn't exist subroot, we
@@ -192,18 +216,25 @@ void BTree<K, V>::insert(BTreeNode* subroot, const DataPair& pair)
 
     //maybe need to do operations on subroot child so we can keep track of parent?
     size_t first_larger_idx = insertion_idx(subroot->elements, pair);
+    //std::cout << "index for key: " << pair.key << " is " << first_larger_idx << std::endl;
 
     /* TODO Your code goes here! */
+    //std::cout << "subroot is a leaf: " << (subroot->is_leaf?"yes":"no" )<< std::endl;
     if (subroot->is_leaf) {
-        subroot->elements[first_larger_idx] = pair;
+        subroot->elements.push_back(pair);
+        std::cout << *subroot << std::endl;
+        std::cout << std::endl;
     } else {
-        insert(subroot->children[first_larger_idx], pair);
+        insert(subroot->children[first_larger_idx], subroot, pair);
     }
 
     //check for valid
     //Need a way to pass in the parent, maybe change the helper function to also take a parent TreeNode
-    if (subroot->elements.size() > order) {
-        split_child(subroot, first_larger_idx);
+    if (parent != nullptr) {
+        if (subroot->elements.size() > order) {
+            split_child(parent, first_larger_idx);
+        }
     }
+    
     
 }

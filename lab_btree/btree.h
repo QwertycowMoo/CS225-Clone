@@ -253,7 +253,7 @@ class BTree
     /**
      * Assignment operator for a BTree.
      * @param rhs The BTree to assign into this one.
-     * @return The copied BTree.
+     * @return The copied BTree. return find(root->children_[index], key);
      */
     const BTree& operator=(const BTree& rhs);
 
@@ -283,7 +283,7 @@ class BTree
      * @param subroot A reference of a pointer to the current BTreeNode.
      * @param pair The DataPair to be inserted.
      */
-    void insert(BTreeNode* subroot, const DataPair& pair);
+    void insert(BTreeNode* subroot, BTreeNode* parent, const DataPair& pair);
 
     /**
      * Private recursive version of the find function.
@@ -344,7 +344,6 @@ size_t insertion_idx(const std::vector<T>& elements, const C& val)
     /* TODO Your code goes here! */
     size_t index = 0;
     for (auto it = elements.begin(); it != elements.end(); ++it) {
-        std::cout << index << std::endl;
         if (val < *it || val == *it) {
             break;
         }
