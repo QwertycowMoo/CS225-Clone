@@ -283,7 +283,7 @@ class BTree
      * @param subroot A reference of a pointer to the current BTreeNode.
      * @param pair The DataPair to be inserted.
      */
-    void insert(BTreeNode* subroot, BTreeNode* parent, const DataPair& pair);
+    void insert(BTreeNode* subroot, BTreeNode* parent, const DataPair& pair, size_t pathTo);
 
     /**
      * Private recursive version of the find function.
