@@ -15,14 +15,15 @@ bool KDTree<Dim>::smallerDimVal(const Point<Dim>& first,
     /**
      * @todo Implement this function!
      */
-     if (first[curDim] == second[curDim]) { //hopefully don't have to check for indexoutofbounds
+     if (first[curDim] < second[curDim]) { //hopefully don't have to check for indexoutofbounds
        return true;
+     } else {
+       if (first[curDim] == second[curDim]) {
+         return first < second;
+       }
+       return false;
      }
-     if (first < second) {
-       return true;
-     }
-
-    return false;
+    
 }
 
 template <int Dim>
@@ -33,6 +34,24 @@ bool KDTree<Dim>::shouldReplace(const Point<Dim>& target,
     /**
      * @todo Implement this function!
      */
+    int currDistance = 0;
+    int potenDistance = 0;
+    for (int i = 0; i < Dim; i++) {
+      double toSquare = (target[i] - currentBest[i]);
+      currDistance += toSquare * toSquare;
+    }
+
+    for (int i = 0; i < Dim; i++) {
+      double toSquare = (target[i] - potential[i]);
+      potenDistance += toSquare * toSquare;
+    }
+    if (potenDistance < currDistance) {
+      return true;
+    } else {
+      if (potenDistance == currDistance) {
+        return potential < currentBest;
+      }
+    }
 
      return false;
 }
