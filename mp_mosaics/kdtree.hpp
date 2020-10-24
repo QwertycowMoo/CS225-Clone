@@ -15,6 +15,12 @@ bool KDTree<Dim>::smallerDimVal(const Point<Dim>& first,
     /**
      * @todo Implement this function!
      */
+     if (first[curDim] == second[curDim]) { //hopefully don't have to check for indexoutofbounds
+       return true;
+     }
+     if (first < second) {
+       return true;
+     }
 
     return false;
 }
