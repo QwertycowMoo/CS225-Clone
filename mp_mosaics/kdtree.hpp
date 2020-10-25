@@ -55,7 +55,37 @@ bool KDTree<Dim>::shouldReplace(const Point<Dim>& target,
 
      return false;
 }
+template <int Dim>
+vector<Point<Dim>> partition(vector<Point<Dim>>& toPart, int l, int r, int pivotIndex) {
+  Point<Dim> partValue = toPart[pivotIndex];
+  int stored = 0; //keeps track of what to swap
+  for (int i = l; i < r; i++) {
+    if (toPart[i] < partValue) {
+      Point<Dim> tempStore = toPart[stored];
+      toPart[stored] = toPart[i];
+      toPart[i] = tempStore;
+      ++stored;
+    }
+  }
+  return stored;
+}
 
+template <int Dim>
+Point<Dim> quickselect(const vector<Point<Dim>> points, int l, int r, int k) {
+  if (l == r) {
+    return points[l];
+  }
+  vector<Point<Dim>> mutablePoints = points;
+  int pivotIndex = r;
+  pivotIndex = partition(mutablePoints, l, r, pivotIndex);
+  if (k == pivotIndex) {
+    return mutablePoints[k];
+  } else if (k < pivotIndex) {
+    return quickselect(mutablePoints, l, pivotIndex - 1, k);
+  } else {
+    return quickselect(mutablePoints, pivotIndex + 1, r, k);
+  }
+}
 template <int Dim>
 KDTree<Dim>::KDTree(const vector<Point<Dim>>& newPoints)
 {
