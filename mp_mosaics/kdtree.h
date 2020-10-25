@@ -259,6 +259,40 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
+    int partition(vector<Point<Dim>>& toPart, int l, int r, int pivotIndex, int dimension) {
+      //std::cout << "partitioning" << std::endl;
+        Point<Dim> partValue = toPart[pivotIndex];
+        int stored = l; //keeps track of what to swap
+        for (int i = l; i < r; i++) {
+          //checks for the dimension that we are trying to split
+          if (toPart[i][dimension] < partValue[dimension]) {
+            Point<Dim> tempStore = toPart[stored];
+            toPart[stored] = toPart[i];
+            toPart[i] = tempStore;
+            ++stored;
+            
+          } //if the dimensions are equal then we check the points themselves
+          else if (toPart[i][dimension] == partValue[dimension]) {
+            if (toPart[i] < partValue) {
+              Point<Dim> tempStore = toPart[stored];
+              toPart[stored] = toPart[i];
+              toPart[i] = tempStore;
+              ++stored;
+            }
+          }
+        }
+        //std::cout << "Printing partitioned on " << partValue << std::endl;
+        //std::cout << "stored is: " << stored << std::endl;
+        // for (size_t i = 0; i < toPart.size(); i++) {
+        //   std::cout << toPart[i];
+        // }
+        // std::cout << std::endl;
+        return stored;
+      }
+
+    Point<Dim> quickselect(const vector<Point<Dim>> points, int l, int r, int k, int dimension);
+
+    void buildTree(KDTreeNode* subroot, vector<Point<Dim>>& newPoints, int l, int r, int dimension);
 };
 
 #include "kdtree.hpp"

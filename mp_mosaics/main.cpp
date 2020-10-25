@@ -23,40 +23,41 @@ namespace opts
 }
 
 int main(int argc, const char** argv) {
-    string inFile = "";
-    string tileDir = "/class/cs225/mp_mosaic_uiuc-ig/";
-    string numTilesStr = "100";
-    string pixelsPerTileStr = "50";
-    string outFile = "mosaic.png";
+    
+    // string inFile = "";
+    // string tileDir = "/class/cs225/mp_mosaic_uiuc-ig/";
+    // string numTilesStr = "100";
+    // string pixelsPerTileStr = "50";
+    // string outFile = "mosaic.png";
 
-    OptionsParser optsparse;
-    optsparse.addArg(inFile);
-    optsparse.addArg(tileDir);
-    optsparse.addArg(numTilesStr);
-    optsparse.addArg(pixelsPerTileStr);
-    optsparse.addArg(outFile);
-    optsparse.addOption("help", opts::help);
-    optsparse.addOption("h", opts::help);
-    optsparse.parse(argc, argv);
+    // OptionsParser optsparse;
+    // optsparse.addArg(inFile);
+    // optsparse.addArg(tileDir);
+    // optsparse.addArg(numTilesStr);
+    // optsparse.addArg(pixelsPerTileStr);
+    // optsparse.addArg(outFile);
+    // optsparse.addOption("help", opts::help);
+    // optsparse.addOption("h", opts::help);
+    // optsparse.parse(argc, argv);
 
-    if (opts::help) {
-        cout << "Usage: " << argv[0]
-             << " background_image.png tile_directory/ [number of tiles] "
-                "[pixels per tile] [output_image.png]"
-             << endl;
-        return 0;
-    }
+    // if (opts::help) {
+    //     cout << "Usage: " << argv[0]
+    //          << " background_image.png tile_directory/ [number of tiles] "
+    //             "[pixels per tile] [output_image.png]"
+    //          << endl;
+    //     return 0;
+    // }
 
-    if (inFile == "") {
-        cout << "Usage: " << argv[0]
-             << " background_image.png tile_directory/ [number of tiles] "
-                "[pixels per tile] [output_image.png]"
-             << endl;
-        return 1;
-    }
+    // if (inFile == "") {
+    //     cout << "Usage: " << argv[0]
+    //          << " background_image.png tile_directory/ [number of tiles] "
+    //             "[pixels per tile] [output_image.png]"
+    //          << endl;
+    //     return 1;
+    // }
 
-    makePhotoMosaic(inFile, tileDir, lexical_cast<int>(numTilesStr),
-                    lexical_cast<int>(pixelsPerTileStr), outFile);
+    // makePhotoMosaic(inFile, tileDir, lexical_cast<int>(numTilesStr),
+    //                 lexical_cast<int>(pixelsPerTileStr), outFile);
 
     return 0;
 }
