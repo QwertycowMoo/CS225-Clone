@@ -5,7 +5,6 @@
 
 #include <utility>
 #include <algorithm>
-
 using namespace std;
 
 template <int Dim>
@@ -168,7 +167,66 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
     /**
      * @todo Implement this function!
      */
+    Point<Dim> maxPoint();
+    for (size_t i = 0; i < Dim; i++) {
+      maxPoint[i] = LONG_MAX;
+    }
+    // Point<Dim> nonRootClosest = findNearestNeighbor(query, root, maxPoint, 0);
+    // if (shouldReplace(query, nonRootClosest, root->point)) {
 
-    return Point<Dim>();
+    // }
+    return 
+}
+
+template <int Dim>
+Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> closest, int dimension) {
+
+ 
+  if (subroot->left == nullptr && subroot->right == nullptr) {
+    return subroot->point;
+  }
+   dimension = dimension % (Dim > 1 ? Dim - 1: Dim);
+   //checks whether to go left or right
+  if (smallerDimVal(query, subroot->point, dimension)) {
+    //checks for existence of left
+    if (subroot->left) {
+      //finds the nearest neighbor of the left
+      Point<Dim> compareClosest = findNearestNeighbor(query, subroot->left, closest, dimension + 1)
+        //sees if it should replace with basically infinity
+
+      if (shouldReplace(query, compareClosest, subroot->point)) {
+        Point<Dim> branchClosest = findNearestNeighbor(query, subroot->right, compareClosest, dimension + 1);
+        if (shouldReplace(query, compareClosest, branchClosest)) {
+          return branchClosest;
+        } else {
+          return compareClosest;
+        }
+      } else if (//if theyre an equal distance return the lesser of the two){
+        return subroot->point;
+      }
+
+
+    } else {
+      return subroot->point;
+    }
+    
+  } else {
+    if (subroot->right) {
+      compareClosest = findNearestNeighbor(query, subroot->right, closest, dimension + 1);
+        
+          if (shouldReplace(query, *closest, compareClosest)) {
+            Point<Dim> branchClosest = findNearestNeighbor(query, subroot->left, compareClosest, dimension + 1);
+            if (shouldReplace(query, compareClosest, branchClosest)) {
+              return branchClosest;
+            } else {
+              return compareClosest;
+            }
+          }
+
+    } else {
+      return subroot->point;
+    }
+  }
+
 }
 
