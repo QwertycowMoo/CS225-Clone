@@ -281,18 +281,13 @@ class KDTree
             }
           }
         }
-        //std::cout << "Printing partitioned on " << partValue << std::endl;
-        //std::cout << "stored is: " << stored << std::endl;
-        // for (size_t i = 0; i < toPart.size(); i++) {
-        //   std::cout << toPart[i];
-        // }
-        // std::cout << std::endl;
+
         return stored;
       }
 
     Point<Dim> quickselect(const vector<Point<Dim>> points, int l, int r, int k, int dimension);
 
-    void buildTree(KDTreeNode* subroot, vector<Point<Dim>>& newPoints, int l, int r, int dimension);
+    void buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& newPoints, int l, int r, int dimension);
 };
 
 #include "kdtree.hpp"

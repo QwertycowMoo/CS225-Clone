@@ -78,7 +78,7 @@ Point<Dim> KDTree<Dim>::quickselect(const vector<Point<Dim>> points, int l, int 
 }
 
 template <int Dim>
-void KDTree<Dim>::buildTree(KDTreeNode* subroot, vector<Point<Dim>>& mutPoints, int l, int r, int dimension) {
+void KDTree<Dim>::buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& mutPoints, int l, int r, int dimension) {
   if (l == r) {
     std::cout << "built a leaf node" << std::endl;
     subroot = new KDTreeNode(quickselect(mutPoints, l, r, (l + r) / 2, dimension));
@@ -87,9 +87,12 @@ void KDTree<Dim>::buildTree(KDTreeNode* subroot, vector<Point<Dim>>& mutPoints, 
     if (dimension < 10) {
       std::cout << "building a node with quickselect: " << quickselect(mutPoints, l, r, (l + r) / 2, dimension) << std::endl;
       subroot = new KDTreeNode(quickselect(mutPoints, l, r, (l + r) / 2, dimension));
-      std::cout << "building left with " << 0 << " " << ((l+r)/2) - 1<< " " << dimension + 1<< std::endl; //this goes to -1 when l = 0 and r = 1
-      buildTree(subroot->left, mutPoints, 0, ((l+r)/2) - 1, dimension + 1);
-      std::cout << "building right with " << ((l+r)/2) + 1 << " " << r << " " << dimension + 1 << std::endl;
+      
+      if (l != (l+r)/2) {
+        std::cout << "building left under " << subroot->point << " with " << l << " " << ((l+r)/2) - 1<< " " << dimension + 1<< std::endl;
+        buildTree(subroot->left, mutPoints, l, ((l+r)/2) - 1, dimension + 1);
+      }
+      std::cout << "building right under " << subroot->point << " with " << ((l+r)/2) + 1 << " " << r << " " << dimension + 1 << std::endl;
       buildTree(subroot->right, mutPoints, ((l+r)/2) + 1, r, dimension + 1);
 
     }
