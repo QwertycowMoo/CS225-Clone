@@ -108,11 +108,6 @@ KDTree<Dim>::KDTree(const vector<Point<Dim>>& newPoints)
      * @todo Implement this function!
     */
   if (newPoints.size() != 0) {
-    for (Point<Dim> point: newPoints) {
-      std::cout << "printing point" << std::endl;
-      std::cout << point << std::endl;
-    }
-
     vector<Point<Dim>> mutPoints = newPoints;
     //remember that k is 0 indexed, we go through the points from the beginning to the end, set k as the median index, and split along the 0th dimension
     std::cout << "building tree" << std::endl;
@@ -128,13 +123,35 @@ KDTree<Dim>::KDTree(const KDTree<Dim>& other) {
    * 
    * @todo Implement
    */
+  if (other.root) {
+    copyCtorHelper(root, other.root);
+  } else {
+    root = nullptr;
+  }
+  
+}
+
+template <int Dim>
+void KDTree<Dim>::copyCtorHelper(KDTreeNode*& subroot, const KDTreeNode* otherRoot) {
+  subroot = new KDTreeNode(otherRoot->point);
+  if (otherRoot->left) {
+    copyCtorHelper(subroot->left, otherRoot->left);
+  }
+  if (otherRoot->right) {
+    copyCtorHelper(subroot->right, otherRoot->right);
+  }
 }
 template<int Dim>
 const KDTree<Dim>& KDTree<Dim>::operator=(const KDTree<Dim>& rhs) {
   /**
    * @todo Implement this function!
    */
-
+  if (rhs->root) {
+    copyCtorHelper(root, rhs->root);
+  } else {
+    root = nullptr;
+  }
+  
   return *this;
 }
 

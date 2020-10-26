@@ -288,6 +288,8 @@ class KDTree
     Point<Dim> quickselect(const vector<Point<Dim>> points, int l, int r, int k, int dimension);
 
     void buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& newPoints, int l, int r, int dimension);
+
+    void copyCtorHelper(KDTreeNode*& subroot, const KDTreeNode* otherRoot);
 };
 
 #include "kdtree.hpp"

@@ -34,7 +34,8 @@ int main(int argc, const char** argv) {
     }
 
     KDTree<1> tree(points);
-    tree.printTree();
+    KDTree<1> otherTree = tree;
+    otherTree.printTree();
     //std::string fname = "test_result_kdtree_"+to_string(K)+"_"+to_string(size)+".kd";
   //writeKdTreeToFile(tree,fname);
   //compareBinaryFiles(fname, "tests/expected_kdtree_"+to_string(K)+"_"+to_string(size)+".kd" );
