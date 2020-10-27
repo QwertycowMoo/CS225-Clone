@@ -287,9 +287,11 @@ class KDTree
 
     Point<Dim> quickselect(const vector<Point<Dim>> points, int l, int r, int k, int dimension);
 
-    void buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& newPoints, int l, int r, int dimension);
+    void buildTree(KDTreeNode*& subroot, vector<Point<Dim>> newPoints, int l, int r, int dimension);
 
     void copyCtorHelper(KDTreeNode*& subroot, const KDTreeNode* otherRoot);
+
+    void destroyHelper(KDTreeNode* root);
 
     Point<Dim> findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> closest, int dimension) const;
 };
