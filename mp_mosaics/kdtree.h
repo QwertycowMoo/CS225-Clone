@@ -261,15 +261,32 @@ class KDTree
      */
     int partition(vector<Point<Dim>>& toPart, int l, int r, int pivotIndex, int dimension) {
       //std::cout << "partitioning" << std::endl;
+      //cout << "dimension is: " << dimension << std::endl <<std::endl;
         Point<Dim> partValue = toPart[pivotIndex];
         int stored = l; //keeps track of what to swap
-        for (int i = l; i < r; i++) {
+        
+        //std::cout << std::endl;
+        for (int i = l; i <= r; i++) {
           //checks for the dimension that we are trying to split
           if (toPart[i][dimension] < partValue[dimension]) {
-            Point<Dim> tempStore = toPart[stored];
-            toPart[stored] = toPart[i];
-            toPart[i] = tempStore;
-            ++stored;
+            // std::cout << "after " << i << " iterations:" << std::endl;
+            // std::cout << "Printing toPart:   " << std::endl;
+            // for (auto it = toPart.begin(); it != toPart.end(); it++) {
+            //   std::cout << *it;
+            // }
+            // std::cout << std::endl;
+            // std::cout << std::endl;
+
+            //std::cout << "toPart[stored]" << toPart[stored] << std::endl;
+            if (toPart[stored] == toPart[i]) {
+              ++stored;   
+            } else {
+              Point<Dim> tempStore = toPart[stored];
+              toPart[stored] = toPart[i];
+              //std::cout << "toPart[i]" << toPart[i] << std::endl;
+              toPart[i] = tempStore;
+              ++stored;   
+            }
             
           } //if the dimensions are equal then we check the points themselves
           else if (toPart[i][dimension] == partValue[dimension]) {
@@ -281,13 +298,21 @@ class KDTree
             }
           }
         }
+        //switch the partValue with the last thing with the stored
+        Point<Dim> tempStore = toPart[stored];
+        toPart[stored] = partValue;
+        toPart[r] = tempStore;
+        // cout << "Printing toPart:   " << std::endl;
+        // for (auto it = toPart.begin(); it != toPart.end(); it++) {
+        //   cout << *it;
+        // }
 
         return stored;
       }
 
-    Point<Dim> quickselect(const vector<Point<Dim>> points, int l, int r, int k, int dimension);
+    Point<Dim> quickselect(vector<Point<Dim>>& points, int l, int r, int k, int dimension);
 
-    void buildTree(KDTreeNode*& subroot, vector<Point<Dim>> newPoints, int l, int r, int dimension);
+    void buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& newPoints, int l, int r, int dimension);
 
     void copyCtorHelper(KDTreeNode*& subroot, const KDTreeNode* otherRoot);
 

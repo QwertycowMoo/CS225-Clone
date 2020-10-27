@@ -57,40 +57,35 @@ bool KDTree<Dim>::shouldReplace(const Point<Dim>& target,
 
 
 template <int Dim>
-Point<Dim> KDTree<Dim>::quickselect(const vector<Point<Dim>> points, int l, int r, int k, int dimension) {
+Point<Dim> KDTree<Dim>::quickselect(vector<Point<Dim>>& points, int l, int r, int k, int dimension) {
   if (l == r) {
     return points[l];
   }
-  dimension = dimension % (Dim > 1 ? Dim - 1: Dim);
+
+  dimension = dimension % Dim;
   int pivotIndex = r;
-  vector<Point<Dim>> mutPoints = points;
-  pivotIndex = partition(mutPoints, l, r, pivotIndex, dimension);
+  pivotIndex = partition(points, l, r, pivotIndex, dimension);
+  //std::cout << "pivotIndex: " << pivotIndex << std::endl;
   if (k == pivotIndex) {
-    return mutPoints[k];
+    return points[k];
   } else if (k < pivotIndex) {
     //std::cout << "less than pivot index" << std::endl;
-    return quickselect(mutPoints, l, pivotIndex - 1, k, dimension);
+    return quickselect(points, l, pivotIndex - 1, k, dimension);
   } else {
     //std::cout << k << " is greater than pivot index " << pivotIndex << std::endl;
-    return quickselect(mutPoints, pivotIndex + 1, r, k, dimension);
+    return quickselect(points, pivotIndex + 1, r, k, dimension);
   }
 }
 
 template <int Dim>
-void KDTree<Dim>::buildTree(KDTreeNode*& subroot, vector<Point<Dim>> mutPoints, int l, int r, int dimension) {
+void KDTree<Dim>::buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& mutPoints, int l, int r, int dimension) {
   if (l == r) {
     //std::cout << "built a leaf node" << std::endl;
-    std::cout << "Printing mutPoints:   " << std::endl;
-    for (auto it = mutPoints.begin(); it != mutPoints.end(); it++) {
-      std::cout << *it;
-    }
-    std::cout << std::endl;
-    std::cout << "LEAF" << "left is : " << mutPoints[l] << "right is : " << mutPoints[r] << "l+r/2" << (l+r)/2 << std::endl;
     subroot = new KDTreeNode(quickselect(mutPoints, l, r, (l + r) / 2, dimension));
     return;
   } else {
-      //std::cout << "building a node with quickselect: " << quickselect(mutPoints, l, r, (l + r) / 2, dimension) << std::endl;
-      std::cout << "left is : " << mutPoints[l] << "right is : " << mutPoints[r] << "l+r/2" << (l+r)/2 << std::endl;
+      //std::cout << "building a node with quickselect: " << std::endl;
+      //std::cout << "left is : " << mutPoints[l] << "right is : " << mutPoints[r] << "l+r/2 " << (l+r)/2 << std::endl;
       subroot = new KDTreeNode(quickselect(mutPoints, l, r, (l + r) / 2, dimension));
       
       if (l != (l+r)/2) {
@@ -110,11 +105,14 @@ KDTree<Dim>::KDTree(const vector<Point<Dim>>& newPoints)
     /**
      * @todo Implement this function!
     */
+
   if (newPoints.size() != 0) {
     vector<Point<Dim>> mutPoints = newPoints;
     //remember that k is 0 indexed, we go through the points from the beginning to the end, set k as the median index, and split along the 0th dimension
-    std::cout << "building tree" << std::endl;
+    //std::cout << "building tree" << std::endl;
     buildTree(root, mutPoints, 0, mutPoints.size() - 1, 0);
+  } else {
+    root = nullptr;
   }
   
 
@@ -163,17 +161,20 @@ KDTree<Dim>::~KDTree() {
   /**
    * @todo Implement this function!
    */
-  destroyHelper(root);
+  if (root) {
+    destroyHelper(root);
+  }
+  
 }
 
 template<int Dim>
 void KDTree<Dim>::destroyHelper(KDTreeNode* root) {
-  if (root == nullptr) {
-    return;
+  if (root) {
+    destroyHelper(root->left);
+    destroyHelper(root->right);
+    delete root;
   }
-  destroyHelper(root->left);
-  destroyHelper(root->right);
-  delete root;
+  
 }
 
 template <int Dim>
@@ -242,7 +243,7 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
     
   } else {
     if (subroot->right) {
-      std::cout << "goin right" << std::endl;
+      //std::cout << "goin right" << std::endl;
       //finds the nearest neighbor of the left
       Point<Dim> compareClosest = findNearestNeighbor(query, subroot->right, closest, dimension + 1);
         //sees if it should replace with basically infinity
