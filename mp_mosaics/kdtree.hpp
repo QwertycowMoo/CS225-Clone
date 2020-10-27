@@ -79,19 +79,19 @@ Point<Dim> KDTree<Dim>::quickselect(const vector<Point<Dim>> points, int l, int 
 template <int Dim>
 void KDTree<Dim>::buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& mutPoints, int l, int r, int dimension) {
   if (l == r) {
-    std::cout << "built a leaf node" << std::endl;
+    //std::cout << "built a leaf node" << std::endl;
     subroot = new KDTreeNode(quickselect(mutPoints, l, r, (l + r) / 2, dimension));
     return;
   } else {
     if (dimension < 10) {
-      std::cout << "building a node with quickselect: " << quickselect(mutPoints, l, r, (l + r) / 2, dimension) << std::endl;
+      //std::cout << "building a node with quickselect: " << quickselect(mutPoints, l, r, (l + r) / 2, dimension) << std::endl;
       subroot = new KDTreeNode(quickselect(mutPoints, l, r, (l + r) / 2, dimension));
       
       if (l != (l+r)/2) {
-        std::cout << "building left under " << subroot->point << " with " << l << " " << ((l+r)/2) - 1<< " " << dimension + 1<< std::endl;
+        //std::cout << "building left under " << subroot->point << " with " << l << " " << ((l+r)/2) - 1<< " " << dimension + 1<< std::endl;
         buildTree(subroot->left, mutPoints, l, ((l+r)/2) - 1, dimension + 1);
       }
-      std::cout << "building right under " << subroot->point << " with " << ((l+r)/2) + 1 << " " << r << " " << dimension + 1 << std::endl;
+      //std::cout << "building right under " << subroot->point << " with " << ((l+r)/2) + 1 << " " << r << " " << dimension + 1 << std::endl;
       buildTree(subroot->right, mutPoints, ((l+r)/2) + 1, r, dimension + 1);
 
     }
@@ -167,19 +167,19 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
     /**
      * @todo Implement this function!
      */
-    Point<Dim> maxPoint();
+    Point<Dim> maxPoint;
     for (size_t i = 0; i < Dim; i++) {
       maxPoint[i] = LONG_MAX;
     }
-    // Point<Dim> nonRootClosest = findNearestNeighbor(query, root, maxPoint, 0);
+    Point<Dim> nonRootClosest = findNearestNeighbor(query, root, maxPoint, 0);
     // if (shouldReplace(query, nonRootClosest, root->point)) {
-
+    //   return root->point;
     // }
-    return 
+    return nonRootClosest;
 }
-
 template <int Dim>
-Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> closest, int dimension) {
+Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> closest, int dimension) const
+{
 
  
   if (subroot->left == nullptr && subroot->right == nullptr) {
@@ -189,22 +189,37 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
    //checks whether to go left or right
   if (smallerDimVal(query, subroot->point, dimension)) {
     //checks for existence of left
+    //std::cout << "goin left" << std::endl;
     if (subroot->left) {
       //finds the nearest neighbor of the left
-      Point<Dim> compareClosest = findNearestNeighbor(query, subroot->left, closest, dimension + 1)
+      Point<Dim> compareClosest = findNearestNeighbor(query, subroot->left, closest, dimension + 1);
         //sees if it should replace with basically infinity
+      //std::cout << "compareclosest is: " << compareClosest << std::endl;
+      if (shouldReplace(query, subroot->point, compareClosest)) {
+        //std::cout << "compareClosest is closer than the subroot" << std::endl;
 
-      if (shouldReplace(query, compareClosest, subroot->point)) {
-        Point<Dim> branchClosest = findNearestNeighbor(query, subroot->right, compareClosest, dimension + 1);
-        if (shouldReplace(query, compareClosest, branchClosest)) {
-          return branchClosest;
+        //checks if the right exists
+        if (subroot->right) {
+
+          //then compares with the right branch
+          Point<Dim> branchClosest = findNearestNeighbor(query, subroot->right, compareClosest, dimension + 1);
+        
+          if (shouldReplace(query, compareClosest, branchClosest)) {
+            //std::cout << "branchClosest is closer" << std::endl;
+            return branchClosest;
+          } else {
+            //std::cout << "compareClosest is closer" << std::endl;
+            return compareClosest;
+          }
         } else {
+          //returns this if no right;
           return compareClosest;
         }
-      } else if (//if theyre an equal distance return the lesser of the two){
+        
+      } else { //lesser of the two is already checked in the shouldReplace
+
         return subroot->point;
       }
-
 
     } else {
       return subroot->point;
@@ -212,16 +227,26 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
     
   } else {
     if (subroot->right) {
-      compareClosest = findNearestNeighbor(query, subroot->right, closest, dimension + 1);
-        
-          if (shouldReplace(query, *closest, compareClosest)) {
-            Point<Dim> branchClosest = findNearestNeighbor(query, subroot->left, compareClosest, dimension + 1);
-            if (shouldReplace(query, compareClosest, branchClosest)) {
-              return branchClosest;
-            } else {
-              return compareClosest;
-            }
+      std::cout << "goin right" << std::endl;
+      //finds the nearest neighbor of the left
+      Point<Dim> compareClosest = findNearestNeighbor(query, subroot->right, closest, dimension + 1);
+        //sees if it should replace with basically infinity
+
+      if (shouldReplace(query, subroot->point, compareClosest)) {
+        if (subroot->left) {
+          Point<Dim> branchClosest = findNearestNeighbor(query, subroot->left, compareClosest, dimension + 1);
+          if (shouldReplace(query, compareClosest, branchClosest)) {
+            return branchClosest;
+          } else {
+            return compareClosest;
           }
+        } else {
+          return compareClosest;
+        }
+        
+      } else { //lesser of the two is already checked in the shouldReplace
+        return subroot->point;
+      }
 
     } else {
       return subroot->point;

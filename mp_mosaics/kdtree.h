@@ -290,6 +290,8 @@ class KDTree
     void buildTree(KDTreeNode*& subroot, vector<Point<Dim>>& newPoints, int l, int r, int dimension);
 
     void copyCtorHelper(KDTreeNode*& subroot, const KDTreeNode* otherRoot);
+
+    Point<Dim> findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> closest, int dimension) const;
 };
 
 #include "kdtree.hpp"

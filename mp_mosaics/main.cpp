@@ -25,17 +25,18 @@ namespace opts
 int main(int argc, const char** argv) {
     
     vector<Point<1>> points;
-    points.reserve(10);
-    for (int i = 0; i < 10; i++) {
-        Point<1> p;
-        for (int j = 0; j < 1; j++)
-            p[j] = i;
-        points.push_back(p);
-    }
+  points.reserve(10);
+  for (int i = 0; i < 10; i++) {
+      Point<1> p;
+      for (int j = 0; j < 1; j++)
+          p[j] = i;
+      points.push_back(p);
+  }
 
-    KDTree<1> tree(points);
-    KDTree<1> otherTree = tree;
-    otherTree.printTree();
+  KDTree<1> tree(points);
+  for (int i = 0; i < 10; i++) {
+    std::cout << tree.findNearestNeighbor(points[i]) << "should be " << points[i] << std::endl;
+  }
     //std::string fname = "test_result_kdtree_"+to_string(K)+"_"+to_string(size)+".kd";
   //writeKdTreeToFile(tree,fname);
   //compareBinaryFiles(fname, "tests/expected_kdtree_"+to_string(K)+"_"+to_string(size)+".kd" );
