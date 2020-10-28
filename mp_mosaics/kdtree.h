@@ -256,6 +256,7 @@ class KDTree
     void printTree(KDTreeNode * subroot, std::vector<std::string>& output,
                    int left, int top, int width, int currd) const;
 
+    double squaredDistance(Point<Dim> p1, Point<Dim> p2) const;
     /**
      * @todo Add your helper functions here.
      */
