@@ -99,8 +99,12 @@ TEST_CASE("LP::testResizeAll", "[valgrind][weight=11]")
 	for(int i = 'a'; i <= 'z'; i++) {
 		string word = "";
 		word += ((char)i);
-		if( !hashTable.keyExists(word) )
+		if( !hashTable.keyExists(word) ){
 			FAIL("Missed a key during resize: " + word);
+		} else {
+			std::cout << "found " << word << std::endl;
+		}
+			
 	}
 
     REQUIRE(true);

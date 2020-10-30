@@ -3,6 +3,7 @@
  * Implementation of the LPHashTable class.
  */
 #include "lphashtable.h"
+#include <iostream>
 
 template <class K, class V>
 LPHashTable<K, V>::LPHashTable(size_t tsize)
@@ -22,8 +23,13 @@ LPHashTable<K, V>::LPHashTable(size_t tsize)
 template <class K, class V>
 LPHashTable<K, V>::~LPHashTable()
 {
-    for (size_t i = 0; i < size; i++)
-        delete table[i];
+    for (size_t i = 0; i < size; i++){
+        if (table[i]) {
+            delete table[i];
+        }
+    }
+
+       
     delete[] table;
     delete[] should_probe;
 }
@@ -79,9 +85,23 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      * **Do this check *after* increasing elems (but before inserting)!!**
      * Also, don't forget to mark the cell for probing with should_probe!
      */
-
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+    unsigned hashedIndex = hashes::hash(key, size);
+    elems++;
+    if (shouldResize()) {
+        //std::cout << "resizing" << std::endl;
+        resizeTable();
+        hashedIndex = hashes::hash(key, size);
+    }
+    while (should_probe[hashedIndex]) {
+        hashedIndex++;
+        if (hashedIndex == size) {
+            hashedIndex = 0;
+        }
+    }
+    should_probe[hashedIndex] = true;
+    //std::cout << "inserting: " << key << std::endl;
+    table[hashedIndex] = new std::pair<K, V>(key, value);
+   
 }
 
 template <class K, class V>
@@ -90,6 +110,15 @@ void LPHashTable<K, V>::remove(K const& key)
     /**
      * @todo: implement this function
      */
+    //std::cout << "remove:" << std::endl;
+    int indx = findIndex(key);
+    if (indx != -1){
+        table[indx] = nullptr;
+        should_probe[indx] = false;
+        elems--;
+    }
+    
+
 }
 
 template <class K, class V>
@@ -101,13 +130,29 @@ int LPHashTable<K, V>::findIndex(const K& key) const
      *
      * Be careful in determining when the key is not in the table!
      */
-
+    unsigned hashedIndex = hashes::hash(key, size);
+    unsigned sentinel = hashedIndex;
+    //std::cout << "size: " << size << std::endl;
+    while (should_probe[hashedIndex]) {
+        if (table[hashedIndex]->first == key) {
+            //std::cout << "returning inside: " << hashedIndex << std::endl;
+            return hashedIndex;
+        }
+        hashedIndex++;
+        if (hashedIndex == size) {
+            hashedIndex = 0;
+        }
+        if (hashedIndex == sentinel) {
+            break;
+        }
+    }
     return -1;
 }
 
 template <class K, class V>
 V LPHashTable<K, V>::find(K const& key) const
 {
+
     int idx = findIndex(key);
     if (idx != -1)
         return table[idx]->second;
@@ -159,4 +204,43 @@ void LPHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+    size_t newSize = size * 2;
+    newSize = findPrime(newSize);
+
+    //std::cout << "new size: " << newSize << std::endl;
+    std::pair<K, V>** newTable = new std::pair<K, V>*[newSize];
+    bool* new_should_probe = new bool[newSize];
+
+    //reinitializing
+    for (size_t i = 0; i < newSize; i++) {
+        newTable[i] = NULL;
+        new_should_probe[i] = false;
+    }
+
+    for(size_t i = 0; i < size; i++) {
+       if (table[i]) {
+        K key = table[i]->first;
+        V value = table[i]->second;
+
+        unsigned newHash = hashes::hash(key, newSize);
+        while (new_should_probe[newHash] == true) {
+            newHash++;
+            if (newHash == newSize) {
+                newHash = 0;
+            }
+        }
+        newTable[newHash] = new std::pair<K, V>(key, value);
+        new_should_probe[newHash] = true;
+        delete table[i];
+       }
+   //std::cout << "old index: " << i << " " << key << ", " << value << " now mapped to index " << newHash << " <" << newTable[newHash].begin()->first << ", " << newTable[newHash].begin()->second << std::endl;
+    }
+
+    size = newSize;
+    auto toDelete = table;
+    auto toDeleteBool = should_probe;
+    table = newTable;
+    should_probe = new_should_probe;
+    delete[] toDeleteBool;
+    delete[] toDelete;
 }
