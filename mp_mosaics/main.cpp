@@ -23,40 +23,64 @@ namespace opts
 }
 
 int main(int argc, const char** argv) {
-    string inFile = "";
-    string tileDir = "/class/cs225/mp_mosaic_uiuc-ig/";
-    string numTilesStr = "100";
-    string pixelsPerTileStr = "50";
-    string outFile = "mosaic.png";
+    
+     double coords[6][2] = {
+        {-15, 7}, {6, 7}, {-13, -1},
+        {-5, 0}, {14, -3}, {14, 2}
+    };
+    double targetCoords[2] = {-13, 1};
+    double expectedCoords[2] = {-13, -1};
 
-    OptionsParser optsparse;
-    optsparse.addArg(inFile);
-    optsparse.addArg(tileDir);
-    optsparse.addArg(numTilesStr);
-    optsparse.addArg(pixelsPerTileStr);
-    optsparse.addArg(outFile);
-    optsparse.addOption("help", opts::help);
-    optsparse.addOption("h", opts::help);
-    optsparse.parse(argc, argv);
+    vector<Point<2>> points;
+    for (int i = 0; i < 6; ++i)
+        points.push_back(Point<2>(coords[i]));
+    Point<2> target(targetCoords);
+    Point<2> expected(expectedCoords);
 
-    if (opts::help) {
-        cout << "Usage: " << argv[0]
-             << " background_image.png tile_directory/ [number of tiles] "
-                "[pixels per tile] [output_image.png]"
-             << endl;
-        return 0;
-    }
+    KDTree<2> tree(points);
+    int size = 2;
+    int K = 2;
+    std::string fname = "test_result_kdtree_"+to_string(K)+"_"+to_string(size)+".kd";
+    tree.printTree();
+    
+    //std::string fname = "test_result_kdtree_"+to_string(K)+"_"+to_string(size)+".kd";
+  //writeKdTreeToFile(tree,fname);
+  //compareBinaryFiles(fname, "tests/expected_kdtree_"+to_string(K)+"_"+to_string(size)+".kd" );
+  //REQUIRE(true);
+    // string inFile = "";
+    // string tileDir = "/class/cs225/mp_mosaic_uiuc-ig/";
+    // string numTilesStr = "100";
+    // string pixelsPerTileStr = "50";
+    // string outFile = "mosaic.png";
 
-    if (inFile == "") {
-        cout << "Usage: " << argv[0]
-             << " background_image.png tile_directory/ [number of tiles] "
-                "[pixels per tile] [output_image.png]"
-             << endl;
-        return 1;
-    }
+    // OptionsParser optsparse;
+    // optsparse.addArg(inFile);
+    // optsparse.addArg(tileDir);
+    // optsparse.addArg(numTilesStr);
+    // optsparse.addArg(pixelsPerTileStr);
+    // optsparse.addArg(outFile);
+    // optsparse.addOption("help", opts::help);
+    // optsparse.addOption("h", opts::help);
+    // optsparse.parse(argc, argv);
 
-    makePhotoMosaic(inFile, tileDir, lexical_cast<int>(numTilesStr),
-                    lexical_cast<int>(pixelsPerTileStr), outFile);
+    // if (opts::help) {
+    //     cout << "Usage: " << argv[0]
+    //          << " background_image.png tile_directory/ [number of tiles] "
+    //             "[pixels per tile] [output_image.png]"
+    //          << endl;
+    //     return 0;
+    // }
+
+    // if (inFile == "") {
+    //     cout << "Usage: " << argv[0]
+    //          << " background_image.png tile_directory/ [number of tiles] "
+    //             "[pixels per tile] [output_image.png]"
+    //          << endl;
+    //     return 1;
+    // }
+
+    // makePhotoMosaic(inFile, tileDir, lexical_cast<int>(numTilesStr),
+    //                 lexical_cast<int>(pixelsPerTileStr), outFile);
 
     return 0;
 }
