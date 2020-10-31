@@ -92,7 +92,7 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
     unsigned hashedIndex = hashes::hash(key, size);
     elems++;
     if (shouldResize()) {
-        //std::cout << "resizing" << std::endl;
+
         resizeTable();
         hashedIndex = hashes::hash(key, size);
     }
@@ -103,7 +103,7 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
         }
     }
     should_probe[hashedIndex] = true;
-    //std::cout << "inserting: " << key << std::endl;
+
     table[hashedIndex] = new std::pair<K, V>(key, value);
    
 }

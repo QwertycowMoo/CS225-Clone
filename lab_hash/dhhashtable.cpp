@@ -132,7 +132,7 @@ int DHHashTable<K, V>::findIndex(const K& key) const
     unsigned secondaryHash = hashes::secondary_hash(key, size);
     while (should_probe[hashedIndex]) {
         if (table[hashedIndex]->first == key) {
-            //std::cout << "returning inside: " << hashedIndex << std::endl;
+           
             return hashedIndex;
         }
         hashedIndex += secondaryHash;

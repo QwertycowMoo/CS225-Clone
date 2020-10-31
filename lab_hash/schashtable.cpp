@@ -85,17 +85,20 @@ void SCHashTable<K, V>::remove(K const& key)
      * erase() function on std::list!
      */
     // prevent warnings... When you implement this function, remove this line.
-    if (keyExists(key)) {
-        unsigned hashedKey = hashes::hash(key, size);
-        std::list< std::pair<K,V> >& listAtHashIndex = table[hashedKey];
-        for (auto it = listAtHashIndex.begin(); it != listAtHashIndex.end(); it++) {
+
+    unsigned hashedKey = hashes::hash(key, size);
+
+    std::list< std::pair<K,V> >& listAtHashIndex = table[hashedKey];
+
+    for (auto it = listAtHashIndex.begin(); it != listAtHashIndex.end(); ++it) {
+
         if (it->first == key){
             elems--;
             listAtHashIndex.erase(it);
+            break;
         }
-        
     }
-    }
+
     
 }
 
@@ -177,7 +180,7 @@ void SCHashTable<K, V>::resizeTable()
     size_t newSize = size * 2;
     newSize = findPrime(newSize);
 
-    std::cout << "new size: " << newSize << std::endl;
+
     std::list<std::pair<K, V>>* newTable = new std::list<std::pair<K, V>>[newSize];
 
 
