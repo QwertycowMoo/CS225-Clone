@@ -85,6 +85,10 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      * **Do this check *after* increasing elems (but before inserting)!!**
      * Also, don't forget to mark the cell for probing with should_probe!
      */
+    int toRemove = findIndex(key);
+    if (toRemove != -1) {
+        delete table[toRemove];
+    }
     unsigned hashedIndex = hashes::hash(key, size);
     elems++;
     if (shouldResize()) {

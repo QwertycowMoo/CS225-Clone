@@ -80,9 +80,31 @@ void DHHashTable<K, V>::insert(K const& key, V const& value)
      *  0.7). **Do this check *after* increasing elems!!** Also, don't
      *  forget to mark the cell for probing with should_probe!
      */
+    int toRemove = findIndex(key);
+    if (toRemove != -1) {    
+        delete table[toRemove];
+    }
 
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+    unsigned hashedIndex = hashes::hash(key, size);
+    unsigned secondary_hash = hashes::secondary_hash(key, size);
+    elems++;
+    if (shouldResize()) {
+        resizeTable();
+        hashedIndex = hashes::hash(key, size);
+        secondary_hash = hashes::secondary_hash(key, size);
+    }
+    while(should_probe[hashedIndex]) {
+        if (table[hashedIndex]->first == key) {
+
+        }
+        hashedIndex += secondary_hash;
+        if (hashedIndex >= size) {
+            hashedIndex = hashedIndex % size;
+        }
+    }
+    should_probe[hashedIndex] = true;
+    table[hashedIndex] = new std::pair<K, V>(key, value);
+
 }
 
 template <class K, class V>
@@ -91,6 +113,12 @@ void DHHashTable<K, V>::remove(K const& key)
     /**
      * @todo Implement this function
      */
+    int indx = findIndex(key);
+    if (indx != -1) {
+        table[indx] = nullptr;
+        should_probe[indx] = false;
+        elems--;
+    }
 }
 
 template <class K, class V>
@@ -99,6 +127,22 @@ int DHHashTable<K, V>::findIndex(const K& key) const
     /**
      * @todo Implement this function
      */
+    unsigned hashedIndex = hashes::hash(key, size);
+    unsigned sentinel = hashedIndex;
+    unsigned secondaryHash = hashes::secondary_hash(key, size);
+    while (should_probe[hashedIndex]) {
+        if (table[hashedIndex]->first == key) {
+            //std::cout << "returning inside: " << hashedIndex << std::endl;
+            return hashedIndex;
+        }
+        hashedIndex += secondaryHash;
+        if (hashedIndex >= size) {
+            hashedIndex = hashedIndex % size;
+        }
+        if (hashedIndex == sentinel) {
+            break;
+        }
+    }
     return -1;
 }
 

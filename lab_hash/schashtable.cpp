@@ -85,15 +85,18 @@ void SCHashTable<K, V>::remove(K const& key)
      * erase() function on std::list!
      */
     // prevent warnings... When you implement this function, remove this line.
-    unsigned hashedKey = hashes::hash(key, size);
-    std::list< std::pair<K,V> >& listAtHashIndex = table[hashedKey];
-    for (auto it = listAtHashIndex.begin(); it != listAtHashIndex.end(); it++) {
+    if (keyExists(key)) {
+        unsigned hashedKey = hashes::hash(key, size);
+        std::list< std::pair<K,V> >& listAtHashIndex = table[hashedKey];
+        for (auto it = listAtHashIndex.begin(); it != listAtHashIndex.end(); it++) {
         if (it->first == key){
             elems--;
             listAtHashIndex.erase(it);
         }
         
     }
+    }
+    
 }
 
 template <class K, class V>
