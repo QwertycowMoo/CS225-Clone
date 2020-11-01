@@ -5,6 +5,7 @@
 
 #include <utility>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 
 template <int Dim>
@@ -36,16 +37,16 @@ bool KDTree<Dim>::shouldReplace(const Point<Dim>& target,
     int currDistance = squaredDistance(target, currentBest);
     int potenDistance = squaredDistance(target, potential);
     
-    std::cout << "potential distance: " << potenDistance << std::endl;
-    std::cout << "curr distance: " << currDistance << std::endl;
+    //std::cout << "potential distance: " << potenDistance << std::endl;
+    //std::cout << "curr distance: " << currDistance << std::endl;
     if (potenDistance < currDistance) {
       return true;
     } else {
       if (potenDistance == currDistance) {
-        std::cout << "potential distance is same as the current one" << std::endl;
-        std::cout << "currentBest" << currentBest << std::endl;
-        std::cout << "potential" << potential << std::endl;
-        std::cout << (potential < currentBest) << std::endl;
+        //std::cout << "potential distance is same as the current one" << std::endl;
+        //std::cout << "currentBest" << currentBest << std::endl;
+        //std::cout << "potential" << potential << std::endl;
+        //std::cout << (potential < currentBest) << std::endl;
         return potential < currentBest;
       }
     }
@@ -238,7 +239,19 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
         }
         
       } else { //lesser of the two is already checked in the shouldReplace
-
+         if (pow(subroot->point[dimension] - query[dimension], 2) <= squaredDistance(query, compareClosest)) {
+          //traverse down the left tree
+          if (subroot->right) {
+            Point<Dim> branchClosest = findNearestNeighbor(query, subroot->right, compareClosest, dimension + 1);
+            if (shouldReplace(query, compareClosest, branchClosest)) {
+              return branchClosest;
+            } else {
+              return compareClosest;
+            }
+          } else {
+            return compareClosest;
+          }
+        }
         return compareClosest;
       }
 
@@ -249,17 +262,9 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
   } else {
     if (subroot->right) {
       //std::cout << "goin right" << std::endl;
-      //finds the nearest neighbor of the left
+      //finds the nearest neighbor of the right
       Point<Dim> compareClosest = findNearestNeighbor(query, subroot->right, closest, dimension + 1);
         //sees if it should replace with basically infinity
-
-      if (root == subroot) {
-        std::cout << "At the root of :" << root->point << std::endl;
-        std::cout << subroot->point <<std::endl;
-        std::cout << compareClosest <<std::endl;
-        std::cout << "should replace: " << shouldReplace(query, compareClosest, subroot->point) << std::endl;
-        std::cout << std::endl;
-      }
       if (shouldReplace(query, compareClosest, subroot->point)) {
 
         if (subroot->left) {
@@ -274,7 +279,24 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
         }
         
       } else { //lesser of the two is already checked in the shouldReplace
+        //check if this point's dimension is closer to the query
+        //check if the split distance for each dimension is smaller than the full radius
+        if (pow(subroot->point[dimension] - query[dimension], 2) <= squaredDistance(query, compareClosest)) {
+          //traverse down the left tree
+          if (subroot->left) {
+            Point<Dim> branchClosest = findNearestNeighbor(query, subroot->left, compareClosest, dimension + 1);
+            if (shouldReplace(query, compareClosest, branchClosest)) {
+              return branchClosest;
+            } else {
+              return compareClosest;
+            }
+          } else {
+            return compareClosest;
+          }
+        }
+         
         return compareClosest;
+        
       }
 
     } else {
@@ -283,4 +305,3 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
   }
 
 }
-
