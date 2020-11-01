@@ -41,6 +41,7 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
             Point<3> nearestNeighbor = kdTree.findNearestNeighbor(kdPixel);
             TileImage* nearestImage = &pixelToImage.find(nearestNeighbor) -> second; //gets the image based on the nearest neighbor point
             mosaic->setTile(i,j,nearestImage);
+            
         }
     }
     return mosaic;
