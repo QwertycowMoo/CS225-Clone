@@ -25,8 +25,9 @@ LPHashTable<K, V>::~LPHashTable()
 {
     for (size_t i = 0; i < size; i++){
         if (table[i]) {
-            delete table[i];
+            delete table[i];  
         }
+        
     }
 
        
@@ -87,12 +88,14 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      */
     int toRemove = findIndex(key);
     if (toRemove != -1) {
+        std::cout << "there's a repeat!" << std::endl;
         delete table[toRemove];
+        elems--;
     }
     unsigned hashedIndex = hashes::hash(key, size);
     elems++;
     if (shouldResize()) {
-
+        std::cout << "resizing" << std::endl;
         resizeTable();
         hashedIndex = hashes::hash(key, size);
     }
@@ -117,6 +120,7 @@ void LPHashTable<K, V>::remove(K const& key)
     //std::cout << "remove:" << std::endl;
     int indx = findIndex(key);
     if (indx != -1){
+        delete table[indx];
         table[indx] = nullptr;
         should_probe[indx] = false;
         elems--;
@@ -245,6 +249,7 @@ void LPHashTable<K, V>::resizeTable()
     auto toDeleteBool = should_probe;
     table = newTable;
     should_probe = new_should_probe;
-    delete[] toDeleteBool;
     delete[] toDelete;
+    delete[] toDeleteBool;
+    
 }
