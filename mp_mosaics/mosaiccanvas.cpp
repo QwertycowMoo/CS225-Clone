@@ -74,7 +74,7 @@ PNG MosaicCanvas::drawMosaic(int pixelsPerTile)
         cerr << "ERROR: pixelsPerTile must be > 0" << endl;
         exit(-1);
     }
-
+    std::cout << "printing columns and rows inside drawMosaic" << columns << " " << rows << std::endl;
     int width = columns * pixelsPerTile;
     int height = rows * pixelsPerTile;
 

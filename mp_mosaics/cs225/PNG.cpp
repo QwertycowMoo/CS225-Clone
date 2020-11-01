@@ -118,7 +118,10 @@ namespace cs225 {
     return imageData_[index];
   }
 
-  LUVAPixel & PNG::getPixel(unsigned int x, unsigned int y) { return _getPixelHelper(x,y); }
+  LUVAPixel & PNG::getPixel(unsigned int x, unsigned int y) { 
+    //std::cout << x << ", " << y << std::endl;
+    return _getPixelHelper(x,y); 
+    }
 
   const LUVAPixel & PNG::getPixel(unsigned int x, unsigned int y) const { return _getPixelHelper(x,y); }
 
