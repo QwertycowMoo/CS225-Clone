@@ -34,8 +34,8 @@ bool KDTree<Dim>::shouldReplace(const Point<Dim>& target,
     /**
      * @todo Implement this function!
      */
-    int currDistance = squaredDistance(target, currentBest);
-    int potenDistance = squaredDistance(target, potential);
+    double currDistance = squaredDistance(target, currentBest);
+    double potenDistance = squaredDistance(target, potential);
     
     //std::cout << "potential distance: " << potenDistance << std::endl;
     //std::cout << "curr distance: " << currDistance << std::endl;
@@ -55,7 +55,7 @@ bool KDTree<Dim>::shouldReplace(const Point<Dim>& target,
 }
 template <int Dim>
 double KDTree<Dim>::squaredDistance(Point<Dim> p1, Point<Dim> p2) const {
-  int distance = 0;
+  double distance = 0.0;
   for (int i = 0; i < Dim; i++) {
     double toSquare = (p1[i] - p2[i]);
     distance += toSquare * toSquare;
@@ -200,6 +200,7 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
     // }
     return nonRootClosest;
 }
+
 template <int Dim>
 Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode* subroot, Point<Dim> closest, int dimension) const
 {
@@ -239,8 +240,8 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
         }
         
       } else { //lesser of the two is already checked in the shouldReplace
-         if (pow(subroot->point[dimension] - query[dimension], 2) <= squaredDistance(query, compareClosest)) {
-          //traverse down the left tree
+         if (pow(subroot->point[dimension] - query[dimension], 2.0) <= squaredDistance(query, compareClosest)) {
+          //traverse down the right tree
           if (subroot->right) {
             Point<Dim> branchClosest = findNearestNeighbor(query, subroot->right, compareClosest, dimension + 1);
             if (shouldReplace(query, compareClosest, branchClosest)) {
@@ -281,7 +282,7 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query, KDTreeNode*
       } else { //lesser of the two is already checked in the shouldReplace
         //check if this point's dimension is closer to the query
         //check if the split distance for each dimension is smaller than the full radius
-        if (pow(subroot->point[dimension] - query[dimension], 2) <= squaredDistance(query, compareClosest)) {
+        if (pow(subroot->point[dimension] - query[dimension], 2.0) <= squaredDistance(query, compareClosest)) {
           //traverse down the left tree
           if (subroot->left) {
             Point<Dim> branchClosest = findNearestNeighbor(query, subroot->left, compareClosest, dimension + 1);
