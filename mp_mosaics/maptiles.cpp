@@ -21,6 +21,7 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
     /**
      * @todo Implement this function!
      */
+    std::cout << "tiles size: " << theTiles.size() << std::endl;
     std::map<Point<3>, TileImage*> pixelToImage;
     std::vector<Point<3>> pointVector;
 
@@ -31,7 +32,7 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
         pixelToImage.insert(std::pair<Point<3>, TileImage*>(pointColor, &theTiles[i]));
         pointVector.push_back(pointColor);
     }
-
+    std::cout << "pointVector size: " << pointVector.size() << std::endl;
     KDTree<3> kdTree(pointVector);
 
 
