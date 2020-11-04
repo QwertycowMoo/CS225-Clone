@@ -97,8 +97,14 @@ heap<T, Compare>::heap(const std::vector<T>& elems)
 {
     // @TODO Construct a heap using the buildHeap algorithm
     _elems.push_back(T());
+    size_t sizeElems = elems.size();
     for (T elem: elems) {
-        push(elem);
+        _elems.push_back(elem);
+    }
+    size_t i = 0
+    while(hasAChild(i)) {
+        heapifyDown(i);
+        i++;
     }
 }
 
