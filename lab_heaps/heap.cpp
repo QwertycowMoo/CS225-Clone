@@ -101,7 +101,7 @@ heap<T, Compare>::heap(const std::vector<T>& elems)
     for (T elem: elems) {
         _elems.push_back(elem);
     }
-    size_t i = 0
+    size_t i = 0;
     while(hasAChild(i)) {
         heapifyDown(i);
         i++;
@@ -133,8 +133,8 @@ template <class T, class Compare>
 void heap<T, Compare>::push(const T& elem)
 {
     // @TODO Add elem to the heap
-    _elems.push_back(elem);
-    heapifyUp(_elems.size() - 1);
+    _elems.insert(_elems.begin() + root(), elem);
+    heapifyDown(root());
 }
 
 template <class T, class Compare>
