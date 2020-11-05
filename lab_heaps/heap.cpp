@@ -61,7 +61,7 @@ void heap<T, Compare>::heapifyDown(size_t currentIdx)
     // @TODO Implement the heapifyDown algorithm.
     if (hasAChild(currentIdx)) {
         size_t priority = maxPriorityChild(currentIdx);
-        if (_elems[currentIdx] > _elems[priority]) {
+        if (_elems[currentIdx] >= _elems[priority]) {
             //swap max priority with the current index
             std::swap(_elems[currentIdx], _elems[priority]);
             heapifyDown(priority);
@@ -101,10 +101,14 @@ heap<T, Compare>::heap(const std::vector<T>& elems)
     for (T elem: elems) {
         _elems.push_back(elem);
     }
-    size_t i = 0;
-    while(hasAChild(i)) {
-        heapifyDown(i);
-        i++;
+    
+    // for (auto it = _elems.begin(); it != _elems.end(); ++it) {
+    //     std::cout << *it;
+    // }
+    for (size_t i = _elems.size() - 1; i >= root(); i--) {
+        if (hasAChild(i)) {
+            heapifyDown(i);
+        }
     }
 }
 
@@ -113,12 +117,17 @@ T heap<T, Compare>::pop()
 {
     // @TODO Remove, and return, the element with highest priority
     T toReturn = _elems[root()];
-    size_t index = root();
-    if (hasAChild(root())) {
-        //find leftmost of right
-        std::swap(_elems[root()], _elems[_elems.size() - 1]);
-        heapifyDown(index);
-    }
+    //get the last thing then heapify down
+     std::cout << "swapping" << _elems[root()] << "," <<  _elems[_elems.size() - 1] << std::endl;
+    std::swap(_elems[root()], _elems[_elems.size() - 1]);
+     std::cout << "erasing: " << *(_elems.begin() + _elems.size() - 1) << std::endl;
+    _elems.pop_back();
+    
+    
+    std::cout << *this << std::endl;
+    
+    heapifyDown(root());
+    std::cout << *this << std::endl;
     return toReturn;
 }
 
@@ -133,8 +142,8 @@ template <class T, class Compare>
 void heap<T, Compare>::push(const T& elem)
 {
     // @TODO Add elem to the heap
-    _elems.insert(_elems.begin() + root(), elem);
-    heapifyDown(root());
+    _elems.push_back(elem);
+    heapifyUp(_elems.size() - 1);
 }
 
 template <class T, class Compare>
