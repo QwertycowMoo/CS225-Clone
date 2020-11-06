@@ -9,6 +9,7 @@ void DisjointSets::addelements (int num) {
 }
 
 int DisjointSets::find(int elem) {
+    //TODO: implement path compression
     while (_data[elem] > -1) {
         elem = _data[elem];
     }

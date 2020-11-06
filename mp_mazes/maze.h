@@ -41,7 +41,7 @@ class SquareMaze{
         *For each square on the bottom row (maximum y coordinate), there is a distance from the origin (i.e. the top-left cell),
         * which is defined as the length (measured as a number of steps) of the only path through the maze from the origin to that square.
         *Select the square in the bottom row with the largest distance from the origin as the destination of the maze. solveMaze() returns the winning path from the origin to the destination as a vector of integers, where each integer represents the direction of a step, using the same encoding as in canTravel().
-        *If multiple paths of maximum length exist, use the one with the destination cell that has the smallest x value.
+        *If multiple paths of maximumtraverse  length exist, use the one with the destination cell that has the smallest x value.
         *Hint: this function should run in time linear in the number of cells in the maze.
         */
         vector< int > solveMaze();
@@ -54,4 +54,5 @@ class SquareMaze{
 
     private:
         DisjointSets dset;
+        vector<vector<std::pair<bool, bool>>> mazeSquares;
 };
