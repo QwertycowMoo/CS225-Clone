@@ -57,7 +57,6 @@ void helpTestUpdateElem(vector<int> vals)
 
     for(size_t i = 0; i < sorted.size(); i++) {
         if (i + 2 == sorted.size()) {
-            std::cout << "extra update!" << std::endl;
             _heap.updateElem(_heap.root() + 1, sorted[i] - 1);
             sorted[i+1] = sorted[i] - 1;
             swap(sorted[i], sorted[i+1]);
