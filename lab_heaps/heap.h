@@ -6,6 +6,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 
 // forward declare descriptor (used for printing, ignore)
 template <class Type, class Comp>

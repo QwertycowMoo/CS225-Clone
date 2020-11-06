@@ -4,6 +4,7 @@
  * Implementation of a heap class.
  */
 
+
 template <class T, class Compare>
 size_t heap<T, Compare>::root() const
 {
@@ -47,12 +48,17 @@ size_t heap<T, Compare>::maxPriorityChild(size_t currentIdx) const
 {
     // @TODO Update to return the index of the child with highest priority
     ///   as defined by higherPriority()
-    size_t idxLeft = currentIdx * 2;
-    size_t idxRight = currentIdx * 2 + 1;
-    if (higherPriority(_elems[idxLeft], _elems[idxRight])) {
+    //check for has a child before calling this function
+        size_t idxLeft = currentIdx * 2;
+        size_t idxRight = currentIdx * 2 + 1;
+        if (higherPriority(_elems[idxLeft], _elems[idxRight])) {
+            return idxLeft;
+        }
+        if (idxRight < _elems.size()) {
+            return idxRight;
+        }
         return idxLeft;
-    }
-    return idxRight;
+    
 }
 
 template <class T, class Compare>
@@ -115,19 +121,21 @@ heap<T, Compare>::heap(const std::vector<T>& elems)
 template <class T, class Compare>
 T heap<T, Compare>::pop()
 {
+    
     // @TODO Remove, and return, the element with highest priority
     T toReturn = _elems[root()];
+    //std::cout << "returning: " << toReturn << std::endl;
     //get the last thing then heapify down
-     std::cout << "swapping" << _elems[root()] << "," <<  _elems[_elems.size() - 1] << std::endl;
+    //std::cout << "swapping" << _elems[root()] << "," <<  _elems[_elems.size() - 1] << std::endl;
     std::swap(_elems[root()], _elems[_elems.size() - 1]);
-     std::cout << "erasing: " << *(_elems.begin() + _elems.size() - 1) << std::endl;
+    //std::cout << "erasing: " << *(_elems.begin() + _elems.size() - 1) << std::endl;
     _elems.pop_back();
     
     
-    std::cout << *this << std::endl;
+    //std::cout << *this << std::endl;
     
     heapifyDown(root());
-    std::cout << *this << std::endl;
+    //std::cout << *this << std::endl;
     return toReturn;
 }
 
@@ -151,13 +159,21 @@ void heap<T, Compare>::updateElem(const size_t & idx, const T& elem)
 {
     // @TODO In-place updates the value stored in the heap array at idx
     // Corrects the heap to remain as a valid heap even after update
+    //std::cout << "before update called with:" << idx << ", " << elem << std::endl << *this << std::endl;
     _elems[idx] = elem;
-    size_t priority = maxPriorityChild(idx);
-    if (higherPriority(elem, _elems[priority])) {
-        heapifyDown(idx);
+    if (hasAChild(idx)) {
+        size_t priority = maxPriorityChild(idx);
+        if (higherPriority(_elems[priority], elem)) {
+            heapifyDown(idx);
+        } else {
+            heapifyUp(idx);
+        }
     } else {
         heapifyUp(idx);
     }
+    
+
+    //std::cout << "after update :" << std::endl << *this << std::endl;
 }
 
 
