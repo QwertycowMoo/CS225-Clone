@@ -9,11 +9,11 @@ void DisjointSets::addelements (int num) {
 }
 
 int DisjointSets::find(int elem) {
-    //TODO: implement path compression
-    while (_data[elem] > -1) {
-        elem = _data[elem];
+    if (_data[elem] <= -1) {
+        return elem;     
     }
-    return elem;
+    _data[elem] = find(_data[elem]);
+    return _data[elem];
 }
 
 void DisjointSets::setunion(int a, int b){

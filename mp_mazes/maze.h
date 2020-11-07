@@ -55,4 +55,6 @@ class SquareMaze{
     private:
         DisjointSets dset;
         vector<vector<std::pair<bool, bool>>> mazeSquares;
+        int _height;
+        int _width;
 };
