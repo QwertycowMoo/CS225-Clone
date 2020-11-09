@@ -6,6 +6,7 @@
 #include "cs225/HSLAPixel.h"
 #include <queue>
 
+using std::pair;
     SquareMaze::SquareMaze() {
         
     }
@@ -133,9 +134,9 @@
         int x = 0;
         int y = 0;
 
-        std::queue<std::pair<std::pair<int, int>, vector<int>>> q; //encode the xy coordinate as an integer of x + y*width, path is going to be stored as a vector
-        //q
-
+        std::queue<pair<pair<int, int>, vector<int>>> q; //encode the xy coordinate as an integer of x + y*width, path is going to be stored as a vector
+        //q's first is the point, q's second is the path
+        
         //array of visited points
         vector<vector<bool>> visited;
         for (int i = 0; i < _width * _height - 1; i++) {
@@ -146,9 +147,10 @@
         }
         visited[0][0] = true;
         //encoding the point as x + y * width indexed at 0
-        q.push(std::pair<int, int>(0,0));
+        q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(0,0), vector<int>()));
         while(!q.empty()) {
-            std::pair<int, int> currPoint = q.front();
+            pair<int, int> currPoint = q.front().first;
+            vector<int> currPath = q.front().second;
             q.pop();
             x = currPoint.first;
             y = currPoint.second;
@@ -162,7 +164,9 @@
                 //right
                 if (!visited[x+1][y]) {
                     visited[x+1][y] = true;
-                    q.push(std::pair<int, int>(x+1, y));
+                    vector<int> path0 = currPath;
+                    path0.push_back(0);
+                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x+1,y), path0);
                 }
             }
             if(canTravel(x, y, 1)) {
