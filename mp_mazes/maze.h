@@ -53,6 +53,7 @@ class SquareMaze{
         PNG * drawMazeWithSolution();
 
     private:
+        vector<int> BFS(vector<vector<bool>>& visited, vector<int> solution, int x, int y);
         DisjointSets dset;
         vector<vector<std::pair<bool, bool>>> mazeSquares;
         int _height;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "cs225/PNG.h"
 #include "cs225/HSLAPixel.h"
+#include <queue>
 
     SquareMaze::SquareMaze() {
         
@@ -21,7 +22,7 @@
         }
         //disjoint set is going to be encoded as a single integer that is width coordinate + height coordinate * max width where both are indexed at 0
         //to check for right element, add 1. To check for bottom element, add width
-        dset.addelements(_width * _height);
+        dset.addelements(_width * _height); 
 
         //seeding random based on nanoseconds
         struct timespec ts;
@@ -120,8 +121,95 @@
     }
 
     vector<int> SquareMaze::solveMaze(){
-        //use dfs on the set since that should be in a tree-like fashion and we pick a point, find its neighbors, then run bfs recursively?
+
+        /*
+            dir = 0 represents a rightward step (+1 to the x coordinate)
+            dir = 1 represents a downward step (+1 to the y coordinate)
+            dir = 2 represents a leftward step (-1 to the x coordinate)
+            dir = 3 represents an upward step (-1 to the y coordinate)
+        */
+
+        vector<int> solution;
+        int x = 0;
+        int y = 0;
+
+        std::queue<std::pair<std::pair<int, int>, vector<int>>> q; //encode the xy coordinate as an integer of x + y*width, path is going to be stored as a vector
+        //q
+
+        //array of visited points
+        vector<vector<bool>> visited;
+        for (int i = 0; i < _width * _height - 1; i++) {
+            visited.push_back(vector<bool>());
+            for (int j = 0; j < _width; j++) {
+                visited[i].push_back(false);
+            }
+        }
+        visited[0][0] = true;
+        //encoding the point as x + y * width indexed at 0
+        q.push(std::pair<int, int>(0,0));
+        while(!q.empty()) {
+            std::pair<int, int> currPoint = q.front();
+            q.pop();
+            x = currPoint.first;
+            y = currPoint.second;
+
+            if (y == _height - 1) {
+                //reached the bottom
+                //check against the largest path size and replace it if necessary
+            }
+            //find the things next to it
+            if(canTravel(x, y, 0)) {
+                //right
+                if (!visited[x+1][y]) {
+                    visited[x+1][y] = true;
+                    q.push(std::pair<int, int>(x+1, y));
+                }
+            }
+            if(canTravel(x, y, 1)) {
+                //down
+                if (!visited[x][y+1]) {
+                    visited[x][y+1] = true;
+                    q.push(std::pair<int, int>(x, y+1));
+                }
+            }
+            if(canTravel(x, y, 2)) {
+                //left
+                if (!visited[x-1][y]) {
+                    visited[x-1][y] = true;
+                    q.push(std::pair<int, int>(x-1, y));
+                }
+            }
+            if(canTravel(x, y, 0)) {
+                //top
+                if (!visited[x][y-1]) {
+                    visited[x][y-1] = true;
+                    q.push(std::pair<int, int>(x, y-1));
+                }
+            }
+        }
+
         return vector<int>(10);
+    }
+
+    vector<int> SquareMaze::BFS(vector<vector<bool>>& visited, vector<int> solution, int x, int y) {
+        if (y == _height - 1) {
+            return solution;
+        }
+        //visit right
+        if (!visited[x+1][y]) {
+            visited[x+1][y] = true;
+            solution.push_back(0);
+            return BFS(visited, solution, x+1, y);
+        }
+        //visit down
+        if (!visited[x][y+1]) {
+            visited[x][y+1] = true;
+            solution.push_back(0);
+            return BFS(visited, solution, x+1, y);
+        }
+        //visit up
+        //visit left
+
     }
 
     PNG * SquareMaze::drawMaze() const {
