@@ -278,8 +278,12 @@ void helpSolveMaze(const MazeReader & soln)
 	REQUIRE(soln.getSolutionSize() == solution.size());
 
 	for (size_t i = 0; i < solution.size(); i++)
-		if (solution[i] != soln.getSolutionAt(i))
+		if (solution[i] != soln.getSolutionAt(i)){
+			cout << i << "th step is wrong" << endl;
+			cout << solution[i] << " vs " << soln.getSolutionAt(i) << endl;
 			FAIL("Solution is incorrect");
+		}
+			
 }
 
 TEST_CASE("testSolveMazeSmall", "[weight=10][part2][timeout=20000]") {

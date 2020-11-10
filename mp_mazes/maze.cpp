@@ -96,11 +96,17 @@ using std::pair;
                return false;
            }
        } else if (dir == 2) {
-           if (mazeSquares[x-1][y].first == true || x == 0) {
+           if (x <= 0) {
+               return false;
+           }
+           if (mazeSquares[x-1][y].first == true) {
                return false;
            }
        } else if (dir == 3) {
-           if (mazeSquares[x][y-1].second == true || y == 0) {
+           if (y <= 0) {
+               return false;
+           }
+           if (mazeSquares[x][y-1].second == true) {
                return false;
            }
        }
@@ -131,6 +137,7 @@ using std::pair;
         */
 
         vector<int> solution;
+        int minX = INT32_MAX;
         int x = 0;
         int y = 0;
 
@@ -158,6 +165,13 @@ using std::pair;
             if (y == _height - 1) {
                 //reached the bottom
                 //check against the largest path size and replace it if necessary
+                if(currPath.size() > solution.size()) {
+                    solution = currPath;
+                } else if (currPath.size() == solution.size()) {
+                    if (x < minX) {
+                        solution = currPath;
+                    }
+                }
             }
             //find the things next to it
             if(canTravel(x, y, 0)) {
@@ -166,54 +180,39 @@ using std::pair;
                     visited[x+1][y] = true;
                     vector<int> path0 = currPath;
                     path0.push_back(0);
-                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x+1,y), path0);
+                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x+1,y), path0));
                 }
             }
             if(canTravel(x, y, 1)) {
                 //down
                 if (!visited[x][y+1]) {
                     visited[x][y+1] = true;
-                    q.push(std::pair<int, int>(x, y+1));
+                    vector<int> path1 = currPath;
+                    path1.push_back(1);
+                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x,y+1), path1));
                 }
             }
             if(canTravel(x, y, 2)) {
                 //left
                 if (!visited[x-1][y]) {
                     visited[x-1][y] = true;
-                    q.push(std::pair<int, int>(x-1, y));
+                    vector<int> path2 = currPath;
+                    path2.push_back(2);
+                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x-1,y), path2));
                 }
             }
-            if(canTravel(x, y, 0)) {
+            if(canTravel(x, y, 3)) {
                 //top
                 if (!visited[x][y-1]) {
                     visited[x][y-1] = true;
-                    q.push(std::pair<int, int>(x, y-1));
+                    vector<int> path3 = currPath;
+                    path3.push_back(3);
+                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x,y-1), path3));
                 }
             }
         }
 
-        return vector<int>(10);
-    }
-
-    vector<int> SquareMaze::BFS(vector<vector<bool>>& visited, vector<int> solution, int x, int y) {
-        if (y == _height - 1) {
-            return solution;
-        }
-        //visit right
-        if (!visited[x+1][y]) {
-            visited[x+1][y] = true;
-            solution.push_back(0);
-            return BFS(visited, solution, x+1, y);
-        }
-        //visit down
-        if (!visited[x][y+1]) {
-            visited[x][y+1] = true;
-            solution.push_back(0);
-            return BFS(visited, solution, x+1, y);
-        }
-        //visit up
-        //visit left
-
+        return solution;
     }
 
     PNG * SquareMaze::drawMaze() const {
@@ -255,5 +254,69 @@ using std::pair;
     }
 
     PNG * SquareMaze::drawMazeWithSolution() {
-        return new PNG();
+        PNG * mazePNG = drawMaze();
+        vector<int> solution = solveMaze();
+        unsigned x = 5;
+        unsigned y = 5;
+
+        //first pixel
+        cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
+        toChange.h = 0;
+        toChange.s = 1;
+        toChange.l = .5;
+        toChange.a = 1;
+        
+        for (int dir: solution) {
+            if (dir == 0) {
+                //right
+                for (int i = 0; i < 10; ++i) {
+                    x++;
+                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
+                    toChange.h = 0;
+                    toChange.s = 1;
+                    toChange.l = .5;
+                    toChange.a = 1;
+                }
+            } else if (dir == 1) {
+                //down
+                for (int i = 0; i < 10; ++i) {
+                    y++;
+                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
+                    toChange.h = 0;
+                    toChange.s = 1;
+                    toChange.l = .5;
+                    toChange.a = 1;
+                }
+            } else if (dir == 2) {
+                //left
+                for (int i = 0; i < 10; ++i) {
+                    x--;
+                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
+                    toChange.h = 0;
+                    toChange.s = 1;
+                    toChange.l = .5;
+                    toChange.a = 1;
+                }
+            } else if (dir == 3) {
+                //up
+                for (int i = 0; i < 10; ++i) {
+                    y--;
+                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
+                    toChange.h = 0;
+                    toChange.s = 1;
+                    toChange.l = .5;
+                    toChange.a = 1;
+                }
+            }
+        }
+        
+        //undo the bottom;
+        x = x / 10;
+        y = y / 10;
+        for (int k = 1; k <= 9; ++k) {
+            cs225::HSLAPixel& bottom = mazePNG->getPixel(x*10 + k, (y+1) * 10);
+            bottom.l = 1.0;
+        }
+        
+        return mazePNG;
     }
