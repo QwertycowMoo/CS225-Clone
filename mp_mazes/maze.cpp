@@ -5,6 +5,8 @@
 #include "cs225/PNG.h"
 #include "cs225/HSLAPixel.h"
 #include <queue>
+#include <map>
+#include <algorithm>
 
 using std::pair;
     SquareMaze::SquareMaze() {
@@ -135,83 +137,170 @@ using std::pair;
             dir = 2 represents a leftward step (-1 to the x coordinate)
             dir = 3 represents an upward step (-1 to the y coordinate)
         */
-
+         struct QNode{
+            pair<int, int> point;
+            int dist;
+            QNode() {
+                point = pair<int, int>(0,0);
+                dist = 0;
+            }
+            QNode(pair<int, int> newPoint, int newDist) {
+                point = newPoint;
+                dist = newDist;
+            }
+        };
         vector<int> solution;
         int minX = INT32_MAX;
         int x = 0;
         int y = 0;
-
-        std::queue<pair<pair<int, int>, vector<int>>> q; //encode the xy coordinate as an integer of x + y*width, path is going to be stored as a vector
-        //q's first is the point, q's second is the path
+        std::queue<QNode> q; 
+        pair<int, int> goalPoint;
+        int longestDist = -1;
         
         //array of visited points
         vector<vector<bool>> visited;
-        for (int i = 0; i < _width * _height - 1; i++) {
+        for (int i = 0; i < _height; i++) {
             visited.push_back(vector<bool>());
             for (int j = 0; j < _width; j++) {
                 visited[i].push_back(false);
             }
         }
         visited[0][0] = true;
-        //encoding the point as x + y * width indexed at 0
-        q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(0,0), vector<int>()));
+       
+       //map for point and distance to origin
+       std::map<pair<int, int>, int> pointDistance;
+
+        q.push(QNode());
+
+        //something outside of this that keeps track of distance to the origin, use another map or 2-d vector that should be correctly set because the longest path is the last one to be found
+
+        //find the longest path, it should have set all the distances perfectly. BFS back to find the path of the maze
         while(!q.empty()) {
-            pair<int, int> currPoint = q.front().first;
-            vector<int> currPath = q.front().second;
+            pair<int, int> currPoint = q.front().point;
+            int distance = q.front().dist;
             q.pop();
             x = currPoint.first;
             y = currPoint.second;
 
             if (y == _height - 1) {
                 //reached the bottom
-                //check against the largest path size and replace it if necessary
-                if(currPath.size() > solution.size()) {
-                    solution = currPath;
-                } else if (currPath.size() == solution.size()) {
+                //check against the largest path size and replace it and the goal point if necessary
+                if(distance > longestDist) {
+                    goalPoint = currPoint;
+                    longestDist = distance;
+                } else if (distance == longestDist) {
                     if (x < minX) {
-                        solution = currPath;
+                        goalPoint = currPoint;
+                        longestDist = distance;
                     }
                 }
             }
-            //find the things next to it
+
+            //run bfs to find distance, then run it again to actually find the true path
+            int newDistance = distance + 1;
+            //find the things next to it(BFS)
             if(canTravel(x, y, 0)) {
                 //right
                 if (!visited[x+1][y]) {
                     visited[x+1][y] = true;
-                    vector<int> path0 = currPath;
-                    path0.push_back(0);
-                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x+1,y), path0));
+                    pair<int,int> newPoint(x+1, y);
+                    pointDistance[newPoint] = newDistance;
+                    q.push(QNode(newPoint, newDistance));
                 }
             }
             if(canTravel(x, y, 1)) {
                 //down
                 if (!visited[x][y+1]) {
                     visited[x][y+1] = true;
-                    vector<int> path1 = currPath;
-                    path1.push_back(1);
-                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x,y+1), path1));
+                    pair<int,int> newPoint(x, y+1);
+                    pointDistance[newPoint] = newDistance;
+                    q.push(QNode(newPoint, newDistance));
                 }
             }
             if(canTravel(x, y, 2)) {
                 //left
                 if (!visited[x-1][y]) {
                     visited[x-1][y] = true;
-                    vector<int> path2 = currPath;
-                    path2.push_back(2);
-                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x-1,y), path2));
+                    pair<int,int> newPoint(x-1, y);
+                    pointDistance[newPoint] = newDistance;
+                    q.push(QNode(newPoint, newDistance));
                 }
             }
             if(canTravel(x, y, 3)) {
                 //top
                 if (!visited[x][y-1]) {
                     visited[x][y-1] = true;
-                    vector<int> path3 = currPath;
-                    path3.push_back(3);
-                    q.push(pair<pair<int, int>, vector<int>>(pair<int, int>(x,y-1), path3));
+                    pair<int,int> newPoint(x, y-1);
+                    pointDistance[newPoint] = newDistance;
+                    q.push(QNode(newPoint, newDistance));
                 }
             }
         }
+        //BFS is done, we found the solution point, now "recuse" and go back through the maze and bfs on the things that will only decrease the path
+        
 
+
+        while (!(goalPoint.first == 0 && goalPoint.second == 0)) {
+
+            
+            if (canTravel(goalPoint.first, goalPoint.second, 3)) {
+                //can travel up
+                
+                pair<int, int> pointUp(goalPoint.first, goalPoint.second - 1);
+                if (pointDistance[pointUp] == longestDist - 1) {
+                    //pushback the opposite direction, down
+                    
+                    solution.push_back(1);
+                    longestDist--;
+                    goalPoint = pointUp;
+                    continue; //don't need to check the rest because we already found the one
+                }
+            }
+
+            if (canTravel(goalPoint.first, goalPoint.second, 2)) {
+                //can travel left
+                
+                pair<int, int> pointLeft(goalPoint.first - 1, goalPoint.second);
+                if (pointDistance[pointLeft] == longestDist - 1) {
+                    //pushback the opposite direction, right
+                    
+                    solution.push_back(0);
+                    longestDist--;
+                    goalPoint = pointLeft;
+                    continue; 
+                }
+            }
+
+            if (canTravel(goalPoint.first, goalPoint.second, 1)) {
+                //can travel down
+                //std::cout << "can go down " << std::endl;
+                pair<int, int> pointDown(goalPoint.first, goalPoint.second + 1);
+                if (pointDistance[pointDown] == longestDist - 1) {
+                    //pushback the opposite direction, top
+                   
+                    solution.push_back(3);
+                    longestDist--;
+                    goalPoint = pointDown;
+                    continue; 
+                }
+            }
+            
+            if (canTravel(goalPoint.first, goalPoint.second, 0)) {
+                //can travel right
+
+                pair<int, int> pointRight(goalPoint.first + 1, goalPoint.second);
+                if (pointDistance[pointRight] == longestDist - 1) {
+                    //pushback the opposite direction, left
+
+                    solution.push_back(2);
+                    longestDist--;
+                    goalPoint = pointRight;
+                    continue; 
+                }
+            } 
+
+        }
+        std::reverse(solution.begin(), solution.end());
         return solution;
     }
 
@@ -261,51 +350,33 @@ using std::pair;
 
         //first pixel
         cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
-        toChange.h = 0;
-        toChange.s = 1;
-        toChange.l = .5;
-        toChange.a = 1;
+        cs225::HSLAPixel redPixel(0,1,.5,1);
+        toChange = redPixel;
         
         for (int dir: solution) {
             if (dir == 0) {
                 //right
                 for (int i = 0; i < 10; ++i) {
                     x++;
-                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
-                    toChange.h = 0;
-                    toChange.s = 1;
-                    toChange.l = .5;
-                    toChange.a = 1;
+                    mazePNG->getPixel(x,y) = redPixel;
                 }
             } else if (dir == 1) {
                 //down
                 for (int i = 0; i < 10; ++i) {
                     y++;
-                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
-                    toChange.h = 0;
-                    toChange.s = 1;
-                    toChange.l = .5;
-                    toChange.a = 1;
+                    mazePNG->getPixel(x,y) = redPixel;
                 }
             } else if (dir == 2) {
                 //left
                 for (int i = 0; i < 10; ++i) {
                     x--;
-                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
-                    toChange.h = 0;
-                    toChange.s = 1;
-                    toChange.l = .5;
-                    toChange.a = 1;
+                    mazePNG->getPixel(x,y) = redPixel;
                 }
             } else if (dir == 3) {
                 //up
                 for (int i = 0; i < 10; ++i) {
                     y--;
-                    cs225::HSLAPixel& toChange = mazePNG->getPixel(x,y);
-                    toChange.h = 0;
-                    toChange.s = 1;
-                    toChange.l = .5;
-                    toChange.a = 1;
+                    mazePNG->getPixel(x,y) = redPixel;
                 }
             }
         }
@@ -314,8 +385,7 @@ using std::pair;
         x = x / 10;
         y = y / 10;
         for (int k = 1; k <= 9; ++k) {
-            cs225::HSLAPixel& bottom = mazePNG->getPixel(x*10 + k, (y+1) * 10);
-            bottom.l = 1.0;
+            mazePNG->getPixel(x*10 + k, (y+1) * 10) = cs225::HSLAPixel(0,0,1,0);
         }
         
         return mazePNG;
