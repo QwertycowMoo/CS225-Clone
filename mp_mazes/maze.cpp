@@ -382,10 +382,12 @@ using std::pair;
         }
         
         //undo the bottom;
+        
         x = x / 10;
         y = y / 10;
+        std::cout << "undoing the bottom at " << x << ", " << y << std::endl;
         for (int k = 1; k <= 9; ++k) {
-            mazePNG->getPixel(x*10 + k, (y+1) * 10) = cs225::HSLAPixel(0,0,1,0);
+            mazePNG->getPixel(x*10 + k, (y+1) * 10) = cs225::HSLAPixel(0,1,1,1);
         }
         
         return mazePNG;
