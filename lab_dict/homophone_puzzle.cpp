@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     /* Default names. */
     string word_list_filename = "data/words.txt";
     string pronounce_dict_filename = "data/cmudict.0.7a";
-
+    cout << pronounce_dict_filename << endl;
     /* Process flags and arguments. */
     for (int i = 1; i < argc; i++) {
         if (std::strcmp(argv[i], "-w") == 0) {
