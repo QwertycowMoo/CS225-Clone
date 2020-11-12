@@ -23,6 +23,16 @@ using std::ifstream;
 AnagramDict::AnagramDict(const string& filename)
 {
     /* Your code goes here! */
+    ifstream wordsFile(filename);
+    string word;
+    if (wordsFile.is_open()) {
+        /* Reads a line from `wordsFile` into `word` until the file ends. */
+        while (getline(wordsFile, word)) {
+            //cout << word << endl;
+            
+        }
+    }
+
 }
 
 /**
@@ -32,6 +42,15 @@ AnagramDict::AnagramDict(const string& filename)
 AnagramDict::AnagramDict(const vector<string>& words)
 {
     /* Your code goes here! */
+    for (string word: words) {
+        vector<string> areAnagrams;
+        for (string toCheck: words) {
+            if (std::is_permutation(word.begin(), word.end(), toCheck.begin(), toCheck.end())) {
+                areAnagrams.push_back(toCheck);
+            }
+        }
+        dict[word] = areAnagrams;
+    }
 }
 
 /**
