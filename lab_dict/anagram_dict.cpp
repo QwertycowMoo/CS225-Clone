@@ -10,6 +10,7 @@
 
 #include <algorithm> /* I wonder why this is included... */
 #include <fstream>
+#include <iostream>
 
 using std::string;
 using std::vector;
@@ -43,13 +44,24 @@ AnagramDict::AnagramDict(const vector<string>& words)
 {
     /* Your code goes here! */
     for (string word: words) {
-        vector<string> areAnagrams;
-        for (string toCheck: words) {
-            if (std::is_permutation(word.begin(), word.end(), toCheck.begin(), toCheck.end())) {
-                areAnagrams.push_back(toCheck);
+        //check through the existing dict and see if this is a permutation of any of the keys
+        //std::cout << "word is " << word << std::endl;
+        bool alreadyEntered = false;
+        for (std::pair<string, vector<string>> dictEntry: dict) {
+            
+            if (std::is_permutation(word.begin(), word.end(), dictEntry.first.begin(), dictEntry.first.end())) {
+                //std::cout << "found permutation!" << std::endl;
+                dict[dictEntry.first].push_back(word);
+                alreadyEntered = true;
+                break;
             }
         }
-        dict[word] = areAnagrams;
+        if (!alreadyEntered) {
+            vector<string> areAnagrams;
+            areAnagrams.push_back(word);
+            dict[word] = areAnagrams;
+        }
+        
     }
 }
 
@@ -62,6 +74,10 @@ AnagramDict::AnagramDict(const vector<string>& words)
 vector<string> AnagramDict::get_anagrams(const string& word) const
 {
     /* Your code goes here! */
+    auto lookup = dict.find(word);
+    if (lookup != dict.end()) {
+        return lookup->second;
+    }
     return vector<string>();
 }
 
@@ -74,5 +90,12 @@ vector<string> AnagramDict::get_anagrams(const string& word) const
 vector<vector<string>> AnagramDict::get_all_anagrams() const
 {
     /* Your code goes here! */
-    return vector<vector<string>>();
+    vector<vector<string>> allAnagrams;
+    for (std::pair<string, vector<string>> dictEntry: dict) {
+        if (dictEntry.second.size() >= 2) {
+            allAnagrams.push_back(dictEntry.second);
+        }
+        
+    }
+    return allAnagrams;
 }
