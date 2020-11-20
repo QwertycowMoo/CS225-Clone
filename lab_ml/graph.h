@@ -193,7 +193,7 @@ public:
 
     /**
      * Sets the weight of the edge between two vertices.
-     * @param source - one vertex the edge is connected to
+     * @param source - one vertex the edge is connected 
      * @param destination - the other vertex the edge is connected to
      * @param weight - the weight to set to the edge
      * @return - if edge exists, set edge weight and return  edge with new weight

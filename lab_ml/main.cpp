@@ -4,7 +4,7 @@
 
 int main() {
   NimLearner nim(10);
-
+  
   // Play 10,000 games of Nim:
   const int gamesPlayed = 10000;
   for (int i = 0; i < gamesPlayed; i++) {
@@ -18,6 +18,6 @@ int main() {
 
   // Save an graph PNG:
   nim.getGraph().savePNG("Out");
-
+  
   return 0;
 }
