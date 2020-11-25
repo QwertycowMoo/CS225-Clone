@@ -122,7 +122,7 @@ void NimLearner::updateEdgeWeights(const std::vector<Edge> & path) {
    if (e.source.substr(1,2) == winner) {
      g_.setEdgeWeight(e.source, e.dest, edgeWeight + 1);
    } else {
-     g_.setEdgeWeight(e.source, e.dest, edgeWeight + 1);
+     g_.setEdgeWeight(e.source, e.dest, edgeWeight - 1);
    }
  }
 }
