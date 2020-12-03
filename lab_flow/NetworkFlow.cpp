@@ -11,6 +11,7 @@
 #include "edge.h"
 
 #include "NetworkFlow.h"
+#include <iostream>
 
 int min(int a, int b) {
   if (a<b)
@@ -22,6 +23,21 @@ NetworkFlow::NetworkFlow(Graph & startingGraph, Vertex source, Vertex sink) :
   g_(startingGraph), residual_(Graph(true,true)), flow_(Graph(true,true)), source_(source), sink_(sink) {
 
   // YOUR CODE HERE
+  for (Vertex v : g_.getVertices()) {
+    residual_.insertVertex(v);
+    flow_.insertVertex(v);
+  }
+  for (Edge e : startingGraph.getEdges()) {
+    residual_.insertEdge(e.source, e.dest);
+    residual_.setEdgeWeight(e.source, e.dest, startingGraph.getEdgeWeight(e.source, e.dest));
+
+    flow_.insertEdge(e.source, e.dest);
+    flow_.setEdgeWeight(e.source, e.dest, 0);
+
+    residual_.insertEdge(e.dest, e.source);
+    residual_.setEdgeWeight(e.dest, e.source, 0);
+  }
+
 }
 
   /**
@@ -84,7 +100,15 @@ bool NetworkFlow::findAugmentingPath(Vertex source, Vertex sink, std::vector<Ver
 
 int NetworkFlow::pathCapacity(const std::vector<Vertex> & path) const {
   // YOUR CODE HERE
-  return 0;
+  int minCap = INT_MAX;
+  Vertex begin = path[0];
+  for (size_t i = 1; i < path.size(); i++) {
+    Vertex end = path[i];
+    int weight = residual_.getEdgeWeight(begin, end);
+    minCap = min(minCap, weight);
+    begin = end;
+  }
+  return minCap;
 }
 
   /**
@@ -97,6 +121,37 @@ int NetworkFlow::pathCapacity(const std::vector<Vertex> & path) const {
 
 const Graph & NetworkFlow::calculateFlow() {
   // YOUR CODE HERE
+  maxFlow_ = 0;
+  std::vector<Vertex> path;
+  while (findAugmentingPath(source_, sink_, path)) {
+    
+    int capacity = pathCapacity(path);
+    
+    maxFlow_ += capacity;
+    Vertex src = path[0];
+    for (size_t i = 1; i < path.size(); i++) {
+      Vertex dest = path[i];
+      if (flow_.getEdgeWeight(src, dest) == Graph::InvalidWeight) {
+        //going through a path that doesn't exist on regular graph, only on residual
+        int f_edge = flow_.getEdgeWeight(dest, src);
+        flow_.setEdgeWeight(dest, src, f_edge - capacity);
+        int r_edge_with = residual_.getEdgeWeight(src, dest);
+        int r_edge_against = residual_.getEdgeWeight(dest, src);
+        residual_.setEdgeWeight(src, dest, r_edge_with - capacity);
+        residual_.setEdgeWeight(dest, src, r_edge_against + capacity);
+      } else {
+        //going through a regular path
+        int f_edge = flow_.getEdgeWeight(src, dest);
+        flow_.setEdgeWeight(src, dest, f_edge + capacity);
+        int r_edge_with = residual_.getEdgeWeight(src, dest);
+        int r_edge_against = residual_.getEdgeWeight(dest, src);
+        residual_.setEdgeWeight(src, dest, r_edge_with - capacity);
+        residual_.setEdgeWeight(dest, src, r_edge_against + capacity);
+      }
+      src = dest;
+    }
+  }
+  
   return flow_;
 }
 
